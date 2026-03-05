@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import MarquesTable from '@/components/MarquesTable';
 
 export default function MarquesPage() {

@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import Link from 'next/link';
 import { Shield, Upload, Search, CheckCircle, FileUp, ArrowRight } from 'lucide-react';
 

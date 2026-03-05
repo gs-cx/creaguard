@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import Header from "@/components/Header";
 
 export default function CGV() {

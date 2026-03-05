@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { Client } from 'pg';
 import { NextResponse } from 'next/server';
 

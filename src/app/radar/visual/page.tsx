@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 'use client';
 
 import React, { useState, useCallback } from 'react';
