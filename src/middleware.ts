@@ -7,16 +7,16 @@ const MAINTENANCE_MODE = false;
 // 2. Définir les routes publiques (accessibles sans connexion)
 const isPublicRoute = createRouteMatcher([
   "/",
-  "/search",            
-  "/api/search",        
-  "/api/analyze",
-  "/api/chat",          // L'IA Juridique
-  "/api/scrape",        // Le Scraper d'images
-  "/api/proxy-image",   // Le Proxy d'images
+  "/search(.*)",            // <-- JOKER AJOUTÉ ICI
+  "/api/search(.*)",        // <-- JOKER AJOUTÉ ICI
+  "/api/analyze(.*)",       // <-- Jokers ajoutés par sécurité pour vos autres API
+  "/api/chat(.*)",          
+  "/api/scrape(.*)",        
+  "/api/proxy-image(.*)",   
   "/questions", 
   "/faq",
-  "/blog",              // <--- AJOUTÉ : La page liste des articles
-  "/blog(.*)",          // <--- AJOUTÉ : Les articles individuels
+  "/blog",                  
+  "/blog(.*)",              
   "/maintenance",
   "/magic",
   "/chain-test",
