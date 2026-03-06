@@ -1,5 +1,5 @@
+'use client';
 export const runtime = 'edge';
-"use client";
 
 import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Clock, Download, EyeOff, AlertTriangle } from 'lucide-react';

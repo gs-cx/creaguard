@@ -1,5 +1,5 @@
-export const runtime = 'edge';
 'use client';
+export const runtime = 'edge';
 
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
