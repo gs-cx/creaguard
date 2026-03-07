@@ -105,7 +105,7 @@ const AiAssistant = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
             question, 
-            expertType: 'data' // ON ACTIVE LE MODE DATA ANALYST
+            expertType: 'data'
         }),
       });
       const data = await res.json();
@@ -120,10 +120,8 @@ const AiAssistant = () => {
   return (
     <div className={`fixed bottom-6 right-6 z-40 flex flex-col items-end transition-all duration-300 ${isOpen ? 'w-full max-w-md' : 'w-auto'}`}>
       
-      {/* FENÊTRE DE CHAT */}
       {isOpen && (
         <div className="bg-[#111116] border border-blue-500/30 shadow-2xl rounded-2xl w-full mb-4 overflow-hidden flex flex-col h-[500px] animate-in slide-in-from-bottom-10 fade-in duration-300">
-          {/* HEADER */}
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 flex justify-between items-center">
             <div className="flex items-center gap-2 text-white font-bold">
               <Bot className="w-5 h-5"/>
@@ -134,9 +132,7 @@ const AiAssistant = () => {
             </button>
           </div>
 
-          {/* MESSAGES */}
           <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-[#0a0a0e]">
-             {/* Message Bienvenue */}
              <div className="flex gap-3">
                 <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
                     <Bot className="w-4 h-4 text-blue-400"/>
@@ -146,7 +142,6 @@ const AiAssistant = () => {
                 </div>
              </div>
 
-             {/* Question User */}
              {question && !loading && answer && (
                 <div className="flex gap-3 justify-end">
                     <div className="bg-blue-600 p-3 rounded-lg rounded-tr-none text-sm text-white">
@@ -155,13 +150,12 @@ const AiAssistant = () => {
                 </div>
              )}
 
-             {/* Réponse IA */}
              {loading && (
                 <div className="flex gap-3">
                     <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
                         <Loader2 className="w-4 h-4 text-blue-400 animate-spin"/>
                     </div>
-                    <div className="text-gray-500 text-sm italic py-2">Analyse de la base en cours...</div>
+                    <div className="text-gray-500 text-sm italic py-2">Analyse en cours...</div>
                 </div>
              )}
 
@@ -177,7 +171,6 @@ const AiAssistant = () => {
              )}
           </div>
 
-          {/* INPUT */}
           <form onSubmit={handleAsk} className="p-3 bg-[#111116] border-t border-white/10 flex gap-2">
             <input 
                 type="text" 
@@ -197,7 +190,6 @@ const AiAssistant = () => {
         </div>
       )}
 
-      {/* BOUTON FLOTTANT (TOGGLE) */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center gap-3 px-5 py-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 ${isOpen ? 'bg-gray-800 text-gray-400' : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'}`}
@@ -216,36 +208,64 @@ const AiAssistant = () => {
 };
 
 
-// --- PAGE PRINCIPALE ---
+// --- PAGE PRINCIPALE AVEC DIAGNOSTIC ---
 export default function DesignsPage() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Design[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedDesign, setSelectedDesign] = useState<Design | null>(null);
-  
-  // NOUVEAU : État pour gérer la page actuelle
   const [page, setPage] = useState(1);
+  
+  // NOUVEAU: ÉCRAN RADAR
+  const [debugLog, setDebugLog] = useState<string>('');
+
+  const addLog = (msg: string) => {
+    setDebugLog(prev => prev + msg + '\n');
+  };
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       fetchDesigns();
     }, 500);
     return () => clearTimeout(delayDebounceFn);
-  }, [query, page]); // Se déclenche quand la recherche OU la page change
+  }, [query, page]); 
 
   const fetchDesigns = async () => {
     setLoading(true);
+    setDebugLog(''); // On vide l'écran
+    addLog(`[1] Début recherche "${query}" (Page ${page})...`);
+
     try {
-      // AJOUT du paramètre page dans la requête
-      const res = await fetch(`/api/search?q=${encodeURIComponent(query)}&limit=24&page=${page}`);
-      const data = await res.json();
-      if (data.hits) {
-        setResults(data.hits);
+      const url = `/api/search?q=${encodeURIComponent(query)}&limit=24&page=${page}`;
+      addLog(`[2] Requête envoyée à Cloudflare API: ${url}`);
+
+      const res = await fetch(url);
+      addLog(`[3] Réponse HTTP Cloudflare: ${res.status} ${res.statusText}`);
+
+      const text = await res.text();
+      addLog(`[4] Contenu brut reçu: ${text.substring(0, 150)}...`);
+
+      if (res.ok) {
+        try {
+            const data = JSON.parse(text);
+            if (data.hits) {
+                setResults(data.hits);
+                addLog(`[5] SUCCÈS ! ${data.hits.length} images récupérées depuis OVH.`);
+            } else {
+                setResults([]);
+                addLog(`[5] ERREUR: Le JSON est valide, mais la clé 'hits' est introuvable. Données: ${JSON.stringify(data).substring(0,100)}`);
+            }
+        } catch (e) {
+            setResults([]);
+            addLog(`[5] ERREUR CRITIQUE: Cloudflare n'a pas renvoyé de JSON. Il a renvoyé du texte ou une erreur HTML.`);
+        }
       } else {
         setResults([]);
+        addLog(`[5] ÉCHEC HTTP. Le serveur a rejeté la requête.`);
       }
-    } catch (error) {
-      console.error("Erreur fetch:", error);
+    } catch (error: any) {
+      setResults([]);
+      addLog(`[CRASH] Erreur fatale du navigateur: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -254,7 +274,6 @@ export default function DesignsPage() {
   return (
     <div className="min-h-screen bg-[#050507] text-white font-sans">
       
-      {/* HEADER RECHERCHE */}
       <div className="bg-[#111116] border-b border-white/5 pt-32 pb-12 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
@@ -270,21 +289,26 @@ export default function DesignsPage() {
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
-                setPage(1); // Retour à la page 1 si on tape une nouvelle recherche
+                setPage(1);
               }}
               placeholder="Rechercher un meuble, une marque, un numéro..."
               className="w-full bg-[#0A0A0F] border border-white/10 rounded-full py-4 pl-6 pr-14 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-xl"
             />
-            <div className="absolute right-2 top-2 p-2 text-gray-400">
-                🔍
-            </div>
+            <div className="absolute right-2 top-2 p-2 text-gray-400">🔍</div>
           </div>
+          
+          {/* NOUVEAU : LA VALISE DE DIAGNOSTIC */}
+          <div className="mt-8 bg-black/80 border-2 border-red-500/50 p-4 rounded-xl text-left font-mono text-xs text-green-400 shadow-2xl whitespace-pre-wrap max-w-2xl mx-auto overflow-x-auto">
+            <div className="text-red-500 font-bold mb-2 flex items-center gap-2 uppercase tracking-wider">
+               <span>🚨 Radar de Diagnostic Connecté</span>
+            </div>
+            {debugLog || "En attente du moteur..."}
+          </div>
+
         </div>
       </div>
 
-      {/* GRILLE RÉSULTATS */}
       <div className="max-w-7xl mx-auto px-6 py-12">
-        
         {loading ? (
           <div className="text-center py-20 text-gray-500 flex flex-col items-center gap-3">
              <Loader2 className="w-8 h-8 animate-spin text-blue-500"/>
@@ -327,7 +351,6 @@ export default function DesignsPage() {
               ))}
             </div>
 
-            {/* NOUVEAU : SYSTÈME DE PAGINATION */}
             {results.length > 0 && (
               <div className="flex justify-center items-center gap-6 mt-16 border-t border-white/10 pt-8">
                 <button
@@ -337,11 +360,7 @@ export default function DesignsPage() {
                 >
                   ← Précédent
                 </button>
-                
-                <span className="text-gray-400 font-medium">
-                  Page <span className="text-white">{page}</span>
-                </span>
-                
+                <span className="text-gray-400 font-medium">Page <span className="text-white">{page}</span></span>
                 <button
                   onClick={() => setPage((p) => p + 1)}
                   disabled={results.length < 24 || loading}
@@ -354,23 +373,20 @@ export default function DesignsPage() {
 
             {results.length === 0 && !loading && (
               <div className="text-center py-20 bg-[#111116] border border-white/5 rounded-2xl border-dashed">
-                <p className="text-gray-400 mb-2">Aucun résultat exact trouvé pour "{query}"</p>
-                <p className="text-sm text-gray-600">Essayez de demander à l'Assistant IA en bas à droite s'il trouve des synonymes.</p>
+                <p className="text-gray-400 mb-2">Aucun résultat affichable.</p>
+                <p className="text-sm text-red-400 font-mono">Veuillez lire le panneau radar ci-dessus pour comprendre l'erreur.</p>
               </div>
             )}
           </>
         )}
       </div>
 
-      {/* MODAL OVERLAY */}
       {selectedDesign && (
         <DesignModal design={selectedDesign} onClose={() => setSelectedDesign(null)} />
       )}
 
-      {/* --- LE CERVEAU INPI --- */}
       <AiAssistant />
 
     </div>
   );
 }
-
