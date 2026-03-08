@@ -38,14 +38,14 @@ export async function GET(request: Request) {
       else if (data.hits) finalHits = data.hits;
       else if (data.results) finalHits = data.results;
 
-      // 🚨 LE TRADUCTEUR : On adapte le vocabulaire pour que les cartes affichent du texte
       const mappedHits = finalHits.map((item: any, idx: number) => ({
         id: idx,
         num_enregistrement: item.numero || "Inconnu",
         titre: `Marque : ${query.toUpperCase()}`,
         deposant: item.statut || "Statut inconnu",
         date: item.date || new Date().toISOString(),
-        image_file: item.logo_disponible ? item.numero : ""
+        // 🚨 ON IGNORE logo_disponible ET ON FORCE TOUJOURS LA DEMANDE D'IMAGE
+        image_file: item.numero || ""
       }));
 
       return NextResponse.json({ hits: mappedHits, success: true });

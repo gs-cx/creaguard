@@ -17,8 +17,53 @@ interface Design {
   locarno?: string;
 }
 
+// --- COMPOSANT CARTE (Avec gestion d'erreur image individuelle) ---
+const DesignCard = ({ design, onClick }: { design: Design, onClick: () => void }) => {
+  const [imgError, setImgError] = useState(false);
+
+  return (
+    <div 
+      onClick={onClick}
+      className="group bg-[#111116] border border-white/10 rounded-xl overflow-hidden hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-900/10 transition-all cursor-pointer flex flex-col"
+    >
+      <div className="relative aspect-[4/3] bg-[#0a0a0e] overflow-hidden flex items-center justify-center">
+        {!imgError && design.image_file ? (
+            <Image
+              src={`/api/design-image?name=${design.image_file}`}
+              alt={design.titre || 'Design'}
+              fill
+              className="object-contain opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 p-4"
+              unoptimized
+              onError={() => setImgError(true)} // Si pas d'image sur OVH, on bascule en mode texte
+            />
+        ) : (
+            <div className="flex flex-col items-center justify-center text-gray-600 h-full w-full bg-[#0a0a0e]">
+               <span className="text-3xl opacity-50 mb-2">🖼️</span>
+               <span className="text-[10px] uppercase tracking-widest opacity-50">Aucun logo INPI</span>
+            </div>
+        )}
+        <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md text-xs font-mono px-2 py-1 rounded text-white border border-white/10">
+          {new Date(design.date).getFullYear()}
+        </div>
+      </div>
+
+      <div className="p-4 flex flex-col flex-1">
+        <h3 className="font-bold text-gray-200 text-sm line-clamp-2 mb-2 group-hover:text-blue-400 transition-colors">
+          {design.titre || "Sans titre"}
+        </h3>
+        <div className="mt-auto pt-4 border-t border-white/5 flex justify-between items-center text-xs text-gray-500">
+          <span className="truncate max-w-[150px]">{design.deposant || "Anonyme"}</span>
+          <span>→</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // --- COMPOSANT MODAL (Fiche Détail) ---
 const DesignModal = ({ design, onClose }: { design: Design; onClose: () => void }) => {
+  const [imgError, setImgError] = useState(false);
+  
   if (!design) return null;
 
   return (
@@ -29,13 +74,14 @@ const DesignModal = ({ design, onClose }: { design: Design; onClose: () => void 
       >
         <div className="w-full md:w-1/2 bg-black flex items-center justify-center p-6 relative">
           <div className="relative w-full h-64 md:h-full min-h-[300px] flex items-center justify-center">
-            {design.image_file ? (
+            {!imgError && design.image_file ? (
                 <Image
                   src={`/api/design-image?name=${design.image_file}`}
                   alt={design.titre}
                   fill
                   className="object-contain"
                   unoptimized
+                  onError={() => setImgError(true)}
                 />
             ) : (
                 <div className="flex flex-col items-center justify-center text-gray-600">
@@ -319,42 +365,7 @@ export default function DesignsPage() {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {results.map((design) => (
-                <div 
-                  key={design.id} 
-                  onClick={() => setSelectedDesign(design)}
-                  className="group bg-[#111116] border border-white/10 rounded-xl overflow-hidden hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-900/10 transition-all cursor-pointer flex flex-col"
-                >
-                  <div className="relative aspect-[4/3] bg-[#0a0a0e] overflow-hidden flex items-center justify-center">
-                    {/* LE CŒUR DE LA SOLUTION : Si un logo existe on l'affiche, sinon on met un joli fond */}
-                    {design.image_file ? (
-                        <Image
-                          src={`/api/design-image?name=${design.image_file}`}
-                          alt={design.titre || 'Design'}
-                          fill
-                          className="object-contain opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 p-4"
-                          unoptimized
-                        />
-                    ) : (
-                        <div className="flex flex-col items-center justify-center text-gray-600 h-full w-full bg-[#0a0a0e]">
-                           <span className="text-3xl opacity-50 mb-2">🖼️</span>
-                           <span className="text-[10px] uppercase tracking-widest opacity-50">Aucun logo INPI</span>
-                        </div>
-                    )}
-                    <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md text-xs font-mono px-2 py-1 rounded text-white border border-white/10">
-                      {new Date(design.date).getFullYear()}
-                    </div>
-                  </div>
-
-                  <div className="p-4 flex flex-col flex-1">
-                    <h3 className="font-bold text-gray-200 text-sm line-clamp-2 mb-2 group-hover:text-blue-400 transition-colors">
-                      {design.titre || "Sans titre"}
-                    </h3>
-                    <div className="mt-auto pt-4 border-t border-white/5 flex justify-between items-center text-xs text-gray-500">
-                      <span className="truncate max-w-[150px]">{design.deposant || "Anonyme"}</span>
-                      <span>→</span>
-                    </div>
-                  </div>
-                </div>
+                <DesignCard key={design.id} design={design} onClick={() => setSelectedDesign(design)} />
               ))}
             </div>
 
