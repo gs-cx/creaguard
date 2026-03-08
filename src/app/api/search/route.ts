@@ -32,20 +32,19 @@ export async function GET(request: Request) {
     if (res.ok) {
       const data = await res.json();
       
-      let finalHits = [];
+      let finalHits: any[] = [];
       if (Array.isArray(data)) finalHits = data;
       else if (data.resultats) finalHits = data.resultats;
       else if (data.hits) finalHits = data.hits;
       else if (data.results) finalHits = data.results;
 
-      // 🚨 LE TRADUCTEUR : On adapte le vocabulaire d'OVH pour l'affichage du site
+      // 🚨 LE TRADUCTEUR : On adapte le vocabulaire pour que les cartes affichent du texte
       const mappedHits = finalHits.map((item: any, idx: number) => ({
         id: idx,
-        num_enregistrement: item.numero,
+        num_enregistrement: item.numero || "Inconnu",
         titre: `Marque : ${query.toUpperCase()}`,
         deposant: item.statut || "Statut inconnu",
-        date: item.date,
-        // S'il y a un logo on envoie le numéro, sinon on laisse vide pour afficher l'icône par défaut
+        date: item.date || new Date().toISOString(),
         image_file: item.logo_disponible ? item.numero : ""
       }));
 
