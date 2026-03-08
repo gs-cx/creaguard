@@ -17,7 +17,7 @@ interface Design {
   locarno?: string;
 }
 
-// --- COMPOSANT CARTE (Avec gestion d'erreur image individuelle) ---
+// --- COMPOSANT CARTE ---
 const DesignCard = ({ design, onClick }: { design: Design, onClick: () => void }) => {
   const [imgError, setImgError] = useState(false);
 
@@ -27,14 +27,15 @@ const DesignCard = ({ design, onClick }: { design: Design, onClick: () => void }
       className="group bg-[#111116] border border-white/10 rounded-xl overflow-hidden hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-900/10 transition-all cursor-pointer flex flex-col"
     >
       <div className="relative aspect-[4/3] bg-[#0a0a0e] overflow-hidden flex items-center justify-center">
-        {!imgError && design.image_file ? (
+        {/* 🚨 LE COURT-CIRCUIT : On utilise directement le numéro d'enregistrement INPI pour réclamer l'image */}
+        {!imgError ? (
             <Image
-              src={`/api/design-image?name=${design.image_file}`}
+              src={`/api/design-image?name=${design.num_enregistrement}`}
               alt={design.titre || 'Design'}
               fill
               className="object-contain opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 p-4"
               unoptimized
-              onError={() => setImgError(true)} // Si pas d'image sur OVH, on bascule en mode texte
+              onError={() => setImgError(true)}
             />
         ) : (
             <div className="flex flex-col items-center justify-center text-gray-600 h-full w-full bg-[#0a0a0e]">
@@ -74,9 +75,9 @@ const DesignModal = ({ design, onClose }: { design: Design; onClose: () => void 
       >
         <div className="w-full md:w-1/2 bg-black flex items-center justify-center p-6 relative">
           <div className="relative w-full h-64 md:h-full min-h-[300px] flex items-center justify-center">
-            {!imgError && design.image_file ? (
+            {!imgError ? (
                 <Image
-                  src={`/api/design-image?name=${design.image_file}`}
+                  src={`/api/design-image?name=${design.num_enregistrement}`}
                   alt={design.titre}
                   fill
                   className="object-contain"
@@ -280,14 +281,15 @@ export default function DesignsPage() {
     addLog(`[1] Début recherche "${query}" (Page ${page})...`);
 
     try {
-      const url = `/api/search?q=${encodeURIComponent(query)}&limit=24&page=${page}`;
+      // 🚨 DESTRUCTEUR DE CACHE NAVIGATEUR : On ajoute le Date.now() pour forcer une requête neuve
+      const url = `/api/search?q=${encodeURIComponent(query)}&limit=24&page=${page}&_browserCache=${Date.now()}`;
       addLog(`[2] Requête envoyée à Cloudflare API: ${url}`);
 
       const res = await fetch(url);
       addLog(`[3] Réponse HTTP Cloudflare: ${res.status}`);
 
       const text = await res.text();
-      addLog(`[4] Contenu brut reçu: ${text.substring(0, 150)}...`);
+      addLog(`[4] Contenu brut reçu: ${text.substring(0, 200)}...`);
 
       if (res.ok) {
         try {
