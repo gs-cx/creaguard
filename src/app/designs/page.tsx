@@ -28,14 +28,21 @@ const DesignModal = ({ design, onClose }: { design: Design; onClose: () => void 
         onClick={e => e.stopPropagation()}
       >
         <div className="w-full md:w-1/2 bg-black flex items-center justify-center p-6 relative">
-          <div className="relative w-full h-64 md:h-full min-h-[300px]">
-            <Image
-              src={`/api/design-image?name=${design.image_file}`}
-              alt={design.titre}
-              fill
-              className="object-contain"
-              unoptimized
-            />
+          <div className="relative w-full h-64 md:h-full min-h-[300px] flex items-center justify-center">
+            {design.image_file ? (
+                <Image
+                  src={`/api/design-image?name=${design.image_file}`}
+                  alt={design.titre}
+                  fill
+                  className="object-contain"
+                  unoptimized
+                />
+            ) : (
+                <div className="flex flex-col items-center justify-center text-gray-600">
+                   <span className="text-4xl mb-3 opacity-30">🖼️</span>
+                   <span className="text-sm uppercase tracking-widest opacity-40 font-mono">Aucun visuel numérisé</span>
+                </div>
+            )}
           </div>
         </div>
 
@@ -43,7 +50,7 @@ const DesignModal = ({ design, onClose }: { design: Design; onClose: () => void 
           <button onClick={onClose} className="self-end text-gray-400 hover:text-white mb-4">✕ Fermer</button>
           
           <span className="text-blue-500 text-xs font-mono uppercase tracking-wider mb-2">
-            Dessin & Modèle INPI
+            Archive INPI
           </span>
           
           <h2 className="text-2xl font-bold text-white mb-6 leading-tight">
@@ -52,7 +59,7 @@ const DesignModal = ({ design, onClose }: { design: Design; onClose: () => void 
 
           <div className="space-y-4 text-sm text-gray-300 flex-1">
             <div className="bg-[#1A1A20] p-4 rounded-lg border border-white/5">
-              <p className="text-gray-500 text-xs uppercase mb-1">Déposant / Propriétaire</p>
+              <p className="text-gray-500 text-xs uppercase mb-1">Statut / Déposant</p>
               <p className="font-semibold text-white">{design.deposant || "Anonyme"}</p>
             </div>
 
@@ -103,10 +110,7 @@ const AiAssistant = () => {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            question, 
-            expertType: 'data'
-        }),
+        body: JSON.stringify({ question, expertType: 'data' }),
       });
       const data = await res.json();
       setAnswer(data.answer);
@@ -124,8 +128,7 @@ const AiAssistant = () => {
         <div className="bg-[#111116] border border-blue-500/30 shadow-2xl rounded-2xl w-full mb-4 overflow-hidden flex flex-col h-[500px] animate-in slide-in-from-bottom-10 fade-in duration-300">
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 flex justify-between items-center">
             <div className="flex items-center gap-2 text-white font-bold">
-              <Bot className="w-5 h-5"/>
-              Analyste INPI
+              <Bot className="w-5 h-5"/> Analyste INPI
             </div>
             <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white">
               <X className="w-5 h-5"/>
@@ -144,9 +147,7 @@ const AiAssistant = () => {
 
              {question && !loading && answer && (
                 <div className="flex gap-3 justify-end">
-                    <div className="bg-blue-600 p-3 rounded-lg rounded-tr-none text-sm text-white">
-                        {question}
-                    </div>
+                    <div className="bg-blue-600 p-3 rounded-lg rounded-tr-none text-sm text-white">{question}</div>
                 </div>
              )}
 
@@ -208,20 +209,16 @@ const AiAssistant = () => {
 };
 
 
-// --- PAGE PRINCIPALE AVEC DIAGNOSTIC ---
+// --- PAGE PRINCIPALE ---
 export default function DesignsPage() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Design[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedDesign, setSelectedDesign] = useState<Design | null>(null);
   const [page, setPage] = useState(1);
-  
-  // NOUVEAU: ÉCRAN RADAR
   const [debugLog, setDebugLog] = useState<string>('');
 
-  const addLog = (msg: string) => {
-    setDebugLog(prev => prev + msg + '\n');
-  };
+  const addLog = (msg: string) => setDebugLog(prev => prev + msg + '\n');
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -231,8 +228,9 @@ export default function DesignsPage() {
   }, [query, page]); 
 
   const fetchDesigns = async () => {
+    if (!query) return;
     setLoading(true);
-    setDebugLog(''); // On vide l'écran
+    setDebugLog('');
     addLog(`[1] Début recherche "${query}" (Page ${page})...`);
 
     try {
@@ -240,7 +238,7 @@ export default function DesignsPage() {
       addLog(`[2] Requête envoyée à Cloudflare API: ${url}`);
 
       const res = await fetch(url);
-      addLog(`[3] Réponse HTTP Cloudflare: ${res.status} ${res.statusText}`);
+      addLog(`[3] Réponse HTTP Cloudflare: ${res.status}`);
 
       const text = await res.text();
       addLog(`[4] Contenu brut reçu: ${text.substring(0, 150)}...`);
@@ -253,19 +251,19 @@ export default function DesignsPage() {
                 addLog(`[5] SUCCÈS ! ${data.hits.length} images récupérées depuis OVH.`);
             } else {
                 setResults([]);
-                addLog(`[5] ERREUR: Le JSON est valide, mais la clé 'hits' est introuvable. Données: ${JSON.stringify(data).substring(0,100)}`);
+                addLog(`[5] ERREUR: Clé 'hits' introuvable.`);
             }
         } catch (e) {
             setResults([]);
-            addLog(`[5] ERREUR CRITIQUE: Cloudflare n'a pas renvoyé de JSON. Il a renvoyé du texte ou une erreur HTML.`);
+            addLog(`[5] ERREUR CRITIQUE: Cloudflare n'a pas renvoyé de JSON.`);
         }
       } else {
         setResults([]);
-        addLog(`[5] ÉCHEC HTTP. Le serveur a rejeté la requête.`);
+        addLog(`[5] ÉCHEC HTTP. OVH a rejeté la requête.`);
       }
     } catch (error: any) {
       setResults([]);
-      addLog(`[CRASH] Erreur fatale du navigateur: ${error.message}`);
+      addLog(`[CRASH] Erreur fatale: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -291,19 +289,20 @@ export default function DesignsPage() {
                 setQuery(e.target.value);
                 setPage(1);
               }}
-              placeholder="Rechercher un meuble, une marque, un numéro..."
+              placeholder="Rechercher une marque (ex: peugeot, dior)..."
               className="w-full bg-[#0A0A0F] border border-white/10 rounded-full py-4 pl-6 pr-14 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-xl"
             />
             <div className="absolute right-2 top-2 p-2 text-gray-400">🔍</div>
           </div>
           
-          {/* NOUVEAU : LA VALISE DE DIAGNOSTIC */}
-          <div className="mt-8 bg-black/80 border-2 border-red-500/50 p-4 rounded-xl text-left font-mono text-xs text-green-400 shadow-2xl whitespace-pre-wrap max-w-2xl mx-auto overflow-x-auto">
-            <div className="text-red-500 font-bold mb-2 flex items-center gap-2 uppercase tracking-wider">
-               <span>🚨 Radar de Diagnostic Connecté</span>
+          {query && (
+            <div className="mt-8 bg-black/80 border-2 border-red-500/50 p-4 rounded-xl text-left font-mono text-xs text-green-400 shadow-2xl whitespace-pre-wrap max-w-2xl mx-auto overflow-x-auto">
+              <div className="text-red-500 font-bold mb-2 flex items-center gap-2 uppercase tracking-wider">
+                 <span>🚨 Radar de Diagnostic Connecté</span>
+              </div>
+              {debugLog || "En attente du moteur..."}
             </div>
-            {debugLog || "En attente du moteur..."}
-          </div>
+          )}
 
         </div>
       </div>
@@ -316,7 +315,7 @@ export default function DesignsPage() {
           </div>
         ) : (
           <>
-            <p className="text-sm text-gray-500 mb-6">{results.length > 0 ? `Résultats - Page ${page}` : 'Aucun résultat'}</p>
+            {results.length > 0 && <p className="text-sm text-gray-500 mb-6">Résultats - Page {page}</p>}
             
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {results.map((design) => (
@@ -325,14 +324,22 @@ export default function DesignsPage() {
                   onClick={() => setSelectedDesign(design)}
                   className="group bg-[#111116] border border-white/10 rounded-xl overflow-hidden hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-900/10 transition-all cursor-pointer flex flex-col"
                 >
-                  <div className="relative aspect-[4/3] bg-black/50 overflow-hidden">
-                    <Image
-                      src={design.image_file ? `/api/design-image?name=${design.image_file}` : '/placeholder.png'}
-                      alt={design.titre || 'Design'}
-                      fill
-                      className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
-                      unoptimized
-                    />
+                  <div className="relative aspect-[4/3] bg-[#0a0a0e] overflow-hidden flex items-center justify-center">
+                    {/* LE CŒUR DE LA SOLUTION : Si un logo existe on l'affiche, sinon on met un joli fond */}
+                    {design.image_file ? (
+                        <Image
+                          src={`/api/design-image?name=${design.image_file}`}
+                          alt={design.titre || 'Design'}
+                          fill
+                          className="object-contain opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 p-4"
+                          unoptimized
+                        />
+                    ) : (
+                        <div className="flex flex-col items-center justify-center text-gray-600 h-full w-full bg-[#0a0a0e]">
+                           <span className="text-3xl opacity-50 mb-2">🖼️</span>
+                           <span className="text-[10px] uppercase tracking-widest opacity-50">Aucun logo INPI</span>
+                        </div>
+                    )}
                     <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md text-xs font-mono px-2 py-1 rounded text-white border border-white/10">
                       {new Date(design.date).getFullYear()}
                     </div>
@@ -343,7 +350,7 @@ export default function DesignsPage() {
                       {design.titre || "Sans titre"}
                     </h3>
                     <div className="mt-auto pt-4 border-t border-white/5 flex justify-between items-center text-xs text-gray-500">
-                      <span className="truncate max-w-[120px]">{design.deposant || "Anonyme"}</span>
+                      <span className="truncate max-w-[150px]">{design.deposant || "Anonyme"}</span>
                       <span>→</span>
                     </div>
                   </div>
@@ -371,7 +378,7 @@ export default function DesignsPage() {
               </div>
             )}
 
-            {results.length === 0 && !loading && (
+            {results.length === 0 && !loading && query && (
               <div className="text-center py-20 bg-[#111116] border border-white/5 rounded-2xl border-dashed">
                 <p className="text-gray-400 mb-2">Aucun résultat affichable.</p>
                 <p className="text-sm text-red-400 font-mono">Veuillez lire le panneau radar ci-dessus pour comprendre l'erreur.</p>
