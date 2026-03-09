@@ -40,7 +40,7 @@ export default function Home() {
             </Link>
             
             {/* BOUTON SECONDAIRE : RECHERCHE (Corrigé vers /search) */}
-            <Link href="/search" className="group bg-white/5 text-white border border-white/10 px-8 py-4 rounded-xl text-lg font-medium hover:bg-white/10 transition-all flex items-center justify-center gap-3">
+            <Link href="/designs" className="group bg-white/5 text-white border border-white/10 px-8 py-4 rounded-xl text-lg font-medium hover:bg-white/10 transition-all flex items-center justify-center gap-3">
               <Search className="w-5 h-5 text-gray-400 group-hover:text-white" />
               Explorer les archives
             </Link>
