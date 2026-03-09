@@ -4,7 +4,7 @@ export const runtime = 'edge';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Sparkles, MessageSquare, Send, X, Loader2, Bot } from 'lucide-react';
+import { Loader2, Bot, Search } from 'lucide-react';
 
 interface Design {
   id: number;
@@ -22,7 +22,6 @@ const DesignCard = ({ design, onClick }: { design: Design, onClick: () => void }
   return (
     <div onClick={onClick} className="group bg-[#111116] border border-white/10 rounded-xl overflow-hidden hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-900/10 transition-all cursor-pointer flex flex-col">
       <div className="relative aspect-[4/3] bg-[#0a0a0e] overflow-hidden flex items-center justify-center p-2">
-        
         {!imgError && design.image_file ? (
             <Image
               src={`/api/design-image?name=${design.image_file}`}
@@ -42,12 +41,10 @@ const DesignCard = ({ design, onClick }: { design: Design, onClick: () => void }
                <span className="text-[10px] uppercase tracking-widest opacity-50 text-center px-2 font-mono">Image non fournie<br/>par l'INPI</span>
             </div>
         )}
-
         <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md text-xs font-mono px-2 py-1 rounded text-white border border-white/10">
           {new Date(design.date).getFullYear()}
         </div>
       </div>
-
       <div className="p-4 flex flex-col flex-1">
         <h3 className="font-bold text-gray-200 text-sm line-clamp-2 mb-2 group-hover:text-blue-400 transition-colors">
           {design.titre || "Sans titre"}
@@ -84,7 +81,6 @@ const DesignModal = ({ design, onClose }: { design: Design; onClose: () => void 
             )}
           </div>
         </div>
-
         <div className="w-full md:w-1/2 p-8 flex flex-col overflow-y-auto">
           <button onClick={onClose} className="self-end text-gray-400 hover:text-white mb-4">✕ Fermer</button>
           <span className="text-blue-500 text-xs font-mono uppercase tracking-wider mb-2">Archive INPI</span>
@@ -111,76 +107,56 @@ const DesignModal = ({ design, onClose }: { design: Design; onClose: () => void 
   );
 };
 
-const AiAssistant = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const handleAsk = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!question.trim()) return;
-    setLoading(true); setAnswer('');
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, expertType: 'data' }),
-      });
-      const data = await res.json();
-      setAnswer(data.answer);
-    } catch (err) { setAnswer("Erreur connexion IA."); } 
-    finally { setLoading(false); }
-  };
-
-  return (
-    <div className={`fixed bottom-6 right-6 z-40 flex flex-col items-end transition-all duration-300 ${isOpen ? 'w-full max-w-md' : 'w-auto'}`}>
-      {isOpen && (
-        <div className="bg-[#111116] border border-blue-500/30 shadow-2xl rounded-2xl w-full mb-4 overflow-hidden flex flex-col h-[500px] animate-in slide-in-from-bottom-10 fade-in duration-300">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 flex justify-between items-center">
-            <div className="flex items-center gap-2 text-white font-bold"><Bot className="w-5 h-5"/> Analyste INPI</div>
-            <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white"><X className="w-5 h-5"/></button>
-          </div>
-          <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-[#0a0a0e]">
-             <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0"><Bot className="w-4 h-4 text-blue-400"/></div>
-                <div className="bg-[#1A1A20] p-3 rounded-lg rounded-tl-none text-sm text-gray-300 border border-white/5">Bonjour. Je suis connecté à la base.</div>
-             </div>
-             {question && !loading && answer && <div className="flex gap-3 justify-end"><div className="bg-blue-600 p-3 rounded-lg rounded-tr-none text-sm text-white">{question}</div></div>}
-             {loading && <div className="flex gap-3"><Loader2 className="w-4 h-4 text-blue-400 animate-spin"/><div className="text-gray-500 text-sm italic py-2">Analyse...</div></div>}
-             {answer && <div className="flex gap-3 animate-in fade-in"><Bot className="w-4 h-4 text-blue-400"/><div className="bg-[#1A1A20] p-3 rounded-lg rounded-tl-none text-sm text-gray-300 whitespace-pre-wrap">{answer}</div></div>}
-          </div>
-          <form onSubmit={handleAsk} className="p-3 bg-[#111116] border-t border-white/10 flex gap-2">
-            <input type="text" value={question} onChange={(e) => setQuestion(e.target.value)} className="flex-1 bg-[#0A0A0F] border border-white/10 rounded-lg px-4 py-2 text-sm text-white" />
-            <button type="submit" disabled={loading || !question.trim()} className="bg-blue-600 text-white p-2 rounded-lg"><Send className="w-4 h-4"/></button>
-          </form>
-        </div>
-      )}
-      <button onClick={() => setIsOpen(!isOpen)} className={`flex items-center gap-3 px-5 py-4 rounded-full shadow-2xl transition-all duration-300 ${isOpen ? 'bg-gray-800 text-gray-400' : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'}`}>
-        {isOpen ? <>Fermer</> : <><Sparkles className="w-5 h-5 animate-pulse"/><span className="font-bold">Interroger l'IA</span></>}
-      </button>
-    </div>
-  );
-};
-
 export default function DesignsPage() {
-  const [query, setQuery] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const [activeQuery, setActiveQuery] = useState('');
+  
   const [results, setResults] = useState<Design[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedDesign, setSelectedDesign] = useState<Design | null>(null);
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => { fetchDesigns(); }, 500);
-    return () => clearTimeout(delayDebounceFn);
-  }, [query, page]); 
+  // IA States
+  const [aiAnswer, setAiAnswer] = useState('');
+  const [aiLoading, setAiLoading] = useState(false);
 
-  const fetchDesigns = async () => {
-    if (!query) return;
+  // Le déclencheur principal (Le bouton Entrée ou le clic sur la loupe)
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchInput.trim()) return;
+
+    // On mémorise la recherche validée pour la pagination
+    setActiveQuery(searchInput);
+    setPage(1);
+
+    // On lance l'IA
+    setAiAnswer('');
+    setAiLoading(true);
+    try {
+      const resAi = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: searchInput, expertType: 'data' }),
+      });
+      const dataAi = await resAi.json();
+      setAiAnswer(dataAi.answer);
+    } catch (err) {
+      setAiAnswer("L'analyse IA est momentanément indisponible.");
+    } finally {
+      setAiLoading(false);
+    }
+
+    // On lance la grille d'images (Page 1)
+    fetchImages(searchInput, 1);
+  };
+
+  // Le moteur d'images (appelé par la barre de recherche ET par la pagination)
+  const fetchImages = async (queryToSearch: string, pageToFetch: number) => {
+    if (!queryToSearch) return;
     setLoading(true);
 
     try {
-      const url = `/api/search?q=${encodeURIComponent(query)}&limit=24&page=${page}&_browserCache=${Date.now()}`;
+      const url = `/api/search?q=${encodeURIComponent(queryToSearch)}&limit=24&page=${pageToFetch}&_browserCache=${Date.now()}`;
       const res = await fetch(url);
       const text = await res.text();
 
@@ -197,24 +173,75 @@ export default function DesignsPage() {
     }
   };
 
+  // Si on clique sur Suivant/Précédent, on ne recharge que les images, pas l'IA
+  useEffect(() => {
+    if (activeQuery && page > 1) {
+      fetchImages(activeQuery, page);
+    } else if (activeQuery && page === 1 && results.length > 0) {
+      // Évite un double chargement sur la première recherche
+      fetchImages(activeQuery, page);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]); 
+
   return (
     <div className="min-h-screen bg-[#050507] text-white font-sans">
       <div className="bg-[#111116] border-b border-white/5 pt-32 pb-12 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Explorer les <span className="text-gray-400">Dessins & Modèles</span></h1>
-          <div className="relative max-w-2xl mx-auto mt-8">
-            <input type="text" value={query} onChange={(e) => { setQuery(e.target.value); setPage(1); }} placeholder="Rechercher une marque (ex: apple, dior)..." className="w-full bg-[#0A0A0F] border border-white/10 rounded-full py-4 pl-6 pr-14 text-white focus:outline-none focus:border-blue-500" />
-            <div className="absolute right-4 top-4 p-1 text-gray-400">🔍</div>
-          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Le Moteur <span className="text-gray-400">Intelligent</span></h1>
+          <p className="text-gray-400 mb-8">
+            Posez votre question à l'IA ou tapez directement le nom d'une marque pour explorer les archives.
+          </p>
+          
+          <form onSubmit={handleSearch} className="relative max-w-3xl mx-auto mt-8">
+            <input 
+              type="text" 
+              value={searchInput} 
+              onChange={(e) => setSearchInput(e.target.value)} 
+              placeholder="Ex: Je cherche des informations sur la marque Apple..." 
+              className="w-full bg-[#0A0A0F] border border-white/10 rounded-full py-4 pl-6 pr-16 text-white focus:outline-none focus:border-blue-500 transition-colors shadow-2xl" 
+            />
+            <button 
+              type="submit"
+              disabled={loading || aiLoading || !searchInput.trim()}
+              className="absolute right-2 top-2 bottom-2 bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-full transition-colors disabled:opacity-50"
+            >
+              <Search className="w-5 h-5" />
+            </button>
+          </form>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-12">
+        
+        {/* LE BLOC INTELLIGENCE ARTIFICIELLE */}
+        {(aiLoading || aiAnswer) && (
+          <div className="mb-12 bg-[#111116] border border-blue-500/30 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+             <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-purple-600"></div>
+             <div className="flex items-center gap-3 mb-4">
+                <Bot className="w-6 h-6 text-blue-400" />
+                <h3 className="text-lg font-bold text-white">Analyse de l'IA</h3>
+             </div>
+             {aiLoading ? (
+                <div className="flex items-center gap-3 text-gray-400">
+                   <Loader2 className="w-5 h-5 animate-spin text-blue-500" />
+                   <p>Extraction des mots-clés et recherche dans les bases de données de l'INPI...</p>
+                </div>
+             ) : (
+                <div className="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">
+                   {aiAnswer}
+                </div>
+             )}
+          </div>
+        )}
+
+        {/* LA GRILLE VISUELLE */}
         {loading ? (
           <div className="text-center py-20 text-gray-500 flex flex-col items-center gap-3"><Loader2 className="w-8 h-8 animate-spin text-blue-500"/></div>
         ) : (
           <>
-            {results.length > 0 && <p className="text-sm text-gray-500 mb-6">Résultats - Page {page}</p>}
+            {results.length > 0 && <p className="text-sm text-gray-500 mb-6">Résultats visuels - Page {page}</p>}
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {results.map((design) => <DesignCard key={design.id} design={design} onClick={() => setSelectedDesign(design)} />)}
             </div>
@@ -227,16 +254,16 @@ export default function DesignsPage() {
               </div>
             )}
 
-            {results.length === 0 && !loading && query && (
+            {results.length === 0 && !loading && activeQuery && !aiLoading && (
               <div className="text-center py-20 bg-[#111116] border border-white/5 rounded-2xl border-dashed">
-                <p className="text-gray-400 mb-2">Aucun résultat trouvé pour "{query}".</p>
+                <p className="text-gray-400 mb-2">Aucune image trouvée pour cette requête.</p>
               </div>
             )}
           </>
         )}
       </div>
+      
       {selectedDesign && <DesignModal design={selectedDesign} onClose={() => setSelectedDesign(null)} />}
-      <AiAssistant />
     </div>
   );
 }
