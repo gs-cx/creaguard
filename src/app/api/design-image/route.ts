@@ -23,21 +23,18 @@ export async function GET(request: Request) {
       return new NextResponse(`Refus OVH ${res.status}: ${txt}`, { status: res.status });
     }
 
-    const buffer = await res.arrayBuffer();
-    
-    // On récupère l'étiquette envoyée par OVH
     let contentType = res.headers.get('content-type') || 'image/jpeg';
-    
-    // Sécurité anti-téléchargement : si c'est un colis anonyme, on force l'image
     if (contentType.includes('application/octet-stream')) {
       contentType = 'image/jpeg';
     }
 
-    return new NextResponse(buffer, {
+    // 🚨 LE CHANGEMENT MAGIQUE : ON UTILISE res.body (STREAM) AU LIEU DE arrayBuffer
+    // Cela empêche la mémoire de Cloudflare de saturer !
+    return new NextResponse(res.body, {
       status: 200,
       headers: {
         'Content-Type': contentType,
-        'Content-Disposition': 'inline', // 🚨 L'ORDRE STRICT D'AFFICHER ET NON DE TÉLÉCHARGER
+        'Content-Disposition': 'inline',
         'Cache-Control': 'public, max-age=86400'
       },
     });
