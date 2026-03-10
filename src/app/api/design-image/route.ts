@@ -24,10 +24,20 @@ export async function GET(request: Request) {
     }
 
     const buffer = await res.arrayBuffer();
+    
+    // On récupère l'étiquette envoyée par OVH
+    let contentType = res.headers.get('content-type') || 'image/jpeg';
+    
+    // Sécurité anti-téléchargement : si c'est un colis anonyme, on force l'image
+    if (contentType.includes('application/octet-stream')) {
+      contentType = 'image/jpeg';
+    }
+
     return new NextResponse(buffer, {
       status: 200,
       headers: {
-        'Content-Type': res.headers.get('content-type') || 'image/jpeg',
+        'Content-Type': contentType,
+        'Content-Disposition': 'inline', // 🚨 L'ORDRE STRICT D'AFFICHER ET NON DE TÉLÉCHARGER
         'Cache-Control': 'public, max-age=86400'
       },
     });
