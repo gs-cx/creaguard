@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     }
 
     // L'adresse de votre usine OVH (remplacez par votre vraie IP)
-    const vpsUrl = "http://VOTRE_IP_OVH:8001/api/radar/audit";
+    const vpsUrl = "http://51.91.196.115.nip.io:8080/api/radar/audit";
     
     // On prépare le colis pour l'OVH
     const vpsFormData = new FormData();
