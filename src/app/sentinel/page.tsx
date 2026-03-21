@@ -28,7 +28,7 @@ export default function SentinelPage() {
     formData.append('file', file);
 
     try {
-      const response = await fetch('/api/radar/route', {
+      const response = await fetch('/api/radar', {
         method: 'POST',
         body: formData,
       });
