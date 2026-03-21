@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     console.log(`📁 Fichier reçu : ${(file as File).name}, taille: ${(file as File).size} octets`);
 
     // On cible directement l'IP pour isoler le problème DNS (remettez le port 80 ou 8080 selon ce qui tourne sur OVH)
-    const targetUrl = "http://51.91.196.115.nip.io/api/radar/audit";
+    const targetUrl = "https://15f12646d3e170.lhr.life/api/radar/audit";
     console.log(`🔗 Tentative de connexion au VPS cible : ${targetUrl}`);
 
     const vpsFormData = new FormData();
