@@ -1,9 +1,12 @@
 'use client';
 
+// Cette ligne est CRUCIALE pour Cloudflare Pages
+export const runtime = 'edge'; 
+
 import React, { useEffect, useState } from 'react';
 
-// REMPLACE PAR L'IP DE TON VPS (Port 8000 ouvert)
-const API_URL = "http://51.91.196.115:8000/api/stats"; 
+// REMPLACE PAR L'IP DE TON VPS
+const API_URL = "http://51.91.xxx.xxx:8000/api/stats"; 
 
 interface InpiStats {
   status: string;
@@ -58,7 +61,7 @@ export default function InpiDashboard() {
   );
 
   if (!data) return (
-    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center">
+    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center font-sans">
       <div className="flex flex-col items-center">
         <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
         <p className="text-slate-400 mt-4 font-medium italic tracking-wide">Initialisation du Phoenix...</p>
@@ -68,9 +71,9 @@ export default function InpiDashboard() {
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-slate-200 p-4 md:p-12 font-sans">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4 text-white">
         <div>
-          <h1 className="text-4xl font-black text-white tracking-tight italic">
+          <h1 className="text-4xl font-black tracking-tight italic uppercase">
             CREAGUARD <span className="text-indigo-500 not-italic">PHOENIX</span>
           </h1>
           <p className="text-slate-400 font-medium">Monitoring Pro - Infrastructure INPI</p>
@@ -128,7 +131,7 @@ export default function InpiDashboard() {
                 <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">Santé Parser</span>
                 <span className="text-indigo-400 font-black tracking-tighter text-xl">{data.health}</span>
             </div>
-            <div className="flex-1 bg-slate-800/20 p-5 rounded-2xl border border-slate-800/50 flex justify-between items-center">
+            <div className="flex-1 bg-slate-800/20 p-5 rounded-2xl border border-slate-800/50 flex justify-between items-center text-white">
                 <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">Dernier relevé</span>
                 <span className="text-slate-300 font-mono text-sm">{data.last_sync}</span>
             </div>
