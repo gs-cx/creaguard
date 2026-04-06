@@ -7,6 +7,7 @@ const MAINTENANCE_MODE = false;
 // 2. Définir les routes publiques (accessibles sans connexion)
 const isPublicRoute = createRouteMatcher([
   "/",
+  "/dashboard-inpi(.*)",
   "/search(.*)",            // <-- JOKER AJOUTÉ ICI
   "/api/search(.*)",        // <-- JOKER AJOUTÉ ICI
   "/api/analyze(.*)",       // <-- Jokers ajoutés par sécurité pour vos autres API
@@ -39,6 +40,7 @@ export default clerkMiddleware((auth, req) => {
     const isAllowedPath = 
       url.pathname.startsWith('/maintenance') || 
       url.pathname.startsWith('/magic') ||
+      url.pathname.startsWith('/dashboard-inpi') ||
       url.pathname.startsWith('/chain-test') ||
       url.pathname.startsWith('/api') ||         
       url.pathname.startsWith('/search') ||      
