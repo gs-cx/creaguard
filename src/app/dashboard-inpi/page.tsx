@@ -5,8 +5,8 @@ export const runtime = 'edge';
 
 import React, { useEffect, useState } from 'react';
 
-// REMPLACE PAR L'IP DE TON VPS
-const API_URL = "http://51.91.xxx.xxx:8000/api/stats"; 
+// Remplacez l'ancienne adresse IP par le domaine du tunnel
+const API_URL = "https://api-inpi.creaguard.cc/api/stats";
 
 interface InpiStats {
   status: string;
