@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Prévisualisation Icônes "Brutalisme Tech" | Datagraphe</title>
+    <style>
+        body { 
+            background-color: #020617; 
+            color: #f8fafc; 
+            font-family: 'Inter', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0;
+            gap: 25px; 
+            text-align: center; 
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        .icon-box { 
+            background: rgba(15, 23, 42, 0.4); 
+            padding: 30px; 
+            border-radius: 12px; 
+            border: 1px solid rgba(255, 255, 255, 0.03); 
+            width: 210px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            transition: all 0.3s ease;
+        }
+        .icon-box:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(56, 189, 248, 0.2);
+            background: rgba(15, 23, 42, 0.8);
+        }
+        h3 { 
+            font-size: 0.8rem; 
+            margin-top: 20px; 
+            margin-bottom: 0;
+            color: #64748b; 
+            font-weight: 600;
+            line-height: 1.4;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- DÉFINITION DU DÉGRADÉ GLOBAL -->
+    <svg width="0" height="0" style="position:absolute;">
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#38bdf8;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <div class="icon-box">
+        <!-- 1. La Fission de Données -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="1.5" style="width: 60px; height: 60px;">
+          <path d="M4 4l4 4M20 4l-4 4M4 20l4-4M20 20l-4-4" stroke-dasharray="2 2"></path>
+          <circle cx="12" cy="12" r="3" fill="url(#grad)" stroke="none"></circle>
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="url(#grad)" stroke-width="2"></path>
+        </svg>
+        <h3>1. Fission<br>(Raffinage)</h3>
+    </div>
+
+    <div class="icon-box">
+        <!-- 2. La Résonance Ciblée -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="1.5" style="width: 60px; height: 60px;">
+          <path d="M2 12s2-8 10-8 10 8 10 8-2 8-10 8-10-8-10-8z" stroke-opacity="0.3"></path>
+          <path d="M12 7l1 5-1 5" stroke="url(#grad)" stroke-width="2.5"></path>
+          <path d="M10 9l-1.5 3L10 15M14 9l1.5 3L14 15" stroke="#fff" stroke-width="1"></path>
+        </svg>
+        <h3>2. Résonance<br>(Détection)</h3>
+    </div>
+
+    <div class="icon-box">
+        <!-- 3. Le Tracé de Synthèse -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="1.5" style="width: 60px; height: 60px;">
+          <circle cx="4" cy="4" r="1.5" fill="#475569" stroke="none"></circle>
+          <circle cx="12" cy="12" r="1.5" fill="#475569" stroke="none"></circle>
+          <circle cx="20" cy="20" r="1.5" fill="#475569" stroke="none"></circle>
+          <path d="M4 4l8 8 8 8" stroke="url(#grad)" stroke-width="3" stroke-linecap="round"></path>
+          <path d="M4 4v8h8v8h8" stroke-dasharray="2 2"></path>
+        </svg>
+        <h3>3. Synthèse<br>(Structuration)</h3>
+    </div>
+
+    <div class="icon-box">
+        <!-- 4. La Grille d'Isolement -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="1" style="width: 60px; height: 60px;">
+          <path d="M3 3h18v18H3z"></path>
+          <path d="M3 9h18M3 15h18M9 3v18M15 3v18"></path>
+          <rect x="9" y="9" width="6" height="6" fill="url(#grad)" stroke="none"></rect>
+          <circle cx="12" cy="12" r="1" fill="#fff" stroke="none"></circle>
+        </svg>
+        <h3>4. Isolement<br>(Capture unique)</h3>
+    </div>
+
+    <div class="icon-box">
+        <!-- 5. L'Hélice de Codage -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="1.5" style="width: 60px; height: 60px;">
+          <path d="M12 2v20M8 5h8M8 19h8M6 12h12"></path>
+          <circle cx="12" cy="12" r="10" stroke-opacity="0.2"></circle>
+          <path d="M8 12l4-7 4 7-4 7-4-7z" fill="url(#grad)" stroke="none"></color>
+          <path d="M12 5l-4 7 4 7 4-7-4-7z" fill="#fff" fill-opacity="0.1" stroke="none"></color>
+        </svg>
+        <h3>5. Codage<br>(Personnalisation)</h3>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cas d'usage | Datagraphe pour les Poseurs de Panneaux Solaires</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; 
+            --primary-glow: rgba(37, 99, 235, 0.4);
+            --secondary: #38bdf8; 
+            --bg: #020617; 
+            --card-bg: rgba(15, 23, 42, 0.6);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            line-height: 1.7; 
+            background-image: radial-gradient(circle at 50% -20%, #0f172a, var(--bg) 60%);
+            background-repeat: no-repeat;
+        }
+
+        header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border); z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        
+        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--text-main); display: flex; align-items: center; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--secondary); }
+        .nav-btn { background: var(--primary); color: #fff !important; padding: 8px 20px; border-radius: 6px; font-weight: 800 !important; }
+
+        section { padding: 120px 20px 60px; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 20px; font-weight: 800; }
+        .gradient-text { background: linear-gradient(to right, var(--secondary), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 60px; }
+        
+        .card { 
+            background: var(--card-bg); padding: 40px; border-radius: 16px; 
+            border: 1px solid var(--card-border); position: relative;
+        }
+        
+        .card.bad { border-top: 4px solid var(--danger); }
+        .card.good { border-top: 4px solid var(--success); background: rgba(16, 185, 129, 0.05); }
+        
+        .card h3 { font-size: 1.8rem; margin-bottom: 20px; }
+        .bad h3 { color: var(--danger); }
+        .good h3 { color: var(--success); }
+        
+        /* Correction de l'alignement des listes */
+        .feature-list { list-style: none; margin-top: 20px; padding: 0; }
+        .feature-list li { 
+            margin-bottom: 20px; 
+            padding-left: 35px; /* Espace pour la puce */
+            position: relative; 
+            line-height: 1.6;
+        }
+        .bad .feature-list li::before, .good .feature-list li::before {
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .bad .feature-list li::before { content: '✕'; color: var(--danger); }
+        .good .feature-list li::before { content: '✓'; color: var(--success); }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(56, 189, 248, 0.1));
+            border: 1px solid var(--primary); padding: 40px; border-radius: 16px;
+            text-align: center; margin-top: 60px;
+        }
+        
+        .btn { 
+            display: inline-block; padding: 16px 32px; background: var(--primary); 
+            color: #fff; text-decoration: none; font-weight: 800; border-radius: 8px;
+            margin-top: 20px; transition: 0.3s;
+        }
+        .btn:hover { background: #1d4ed8; box-shadow: 0 0 20px var(--primary-glow); }
+
+        footer { background: #020617; padding: 40px 20px; border-top: 1px solid #1e293b; text-align: center; margin-top: 80px;}
+
+        @media (max-width: 768px) {
+            .comparison-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="/index.html" class="logo">DATAGRAPHE</a>
+            <nav class="nav-links">
+                <a href="/blog.html">Cas d'usage</a>
+                <a href="/index.html#demo" class="nav-btn">Retour à la recherche</a>
+            </nav>
+        </div>
+    </header>
+
+    <section>
+        <h1 class="section-title">Le coût de la prospection <span class="gradient-text">manuelle.</span></h1>
+        <p style="text-align: center; font-size: 1.2rem; color: var(--text-muted); max-width: 800px; margin: 0 auto;">
+            Un installateur solaire gagne sa vie sur un toit, pas derrière un écran. Découvrez pourquoi chercher vos clients vous-même vous fait perdre de l'argent.
+        </p>
+
+        <div class="comparison-grid">
+            <!-- Colonne "A l'ancienne" -->
+            <div class="card bad">
+                <h3>La méthode "Google Maps"</h3>
+                <p style="color: var(--text-muted); margin-bottom: 25px;">L'illusion de la gratuité. Vous passez vos soirées à chercher des toits intéressants sur satellite.</p>
+                <ul class="feature-list">
+                    <li><strong>Coût d'opportunité :</strong> 10h de recherche = 800€ de temps perdu.</li>
+                    <li><strong>Données invisibles :</strong> Impossible de connaître l'inclinaison exacte ou la surface en m².</li>
+                    <li><strong>Risque juridique :</strong> Vous ignorez si le bâtiment est classé (Zone Architectes Bâtiments de France).</li>
+                    <li><strong>Contact à froid :</strong> Vous devez chercher le numéro du propriétaire dans l'annuaire, un par un.</li>
+                </ul>
+            </div>
+
+            <!-- Colonne "Datagraphe" -->
+            <div class="card good">
+                <h3>La méthode Datagraphe</h3>
+                <p style="color: var(--text-muted); margin-bottom: 25px;">L'ingénierie spatiale PostGIS au service de votre CRM. La donnée vient à vous.</p>
+                <ul class="feature-list">
+                    <li><strong>Immédiateté :</strong> 200 prospects qualifiés générés en 10 secondes.</li>
+                    <li><strong>Précision Spatiale :</strong> Filtrage par surface de toiture (> 500m²), orientation Sud, et typologie (industriel/agricole).</li>
+                    <li><strong>Sécurité :</strong> Exclusion automatique des zones urbaines protégées (PLU / ABF).</li>
+                    <li><strong>Fraîcheur du signal :</strong> Détection des nouvelles constructions via les permis de construire récents.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h2 style="font-size: 2rem; margin-bottom: 15px;">Arrêtez de chercher. Laissez-nous cibler.</h2>
+            <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 25px;">
+                Testez notre moteur d'extraction dès maintenant. Définissez votre rayon, votre cible, et obtenez votre liste de bâtiments qualifiés instantanément.
+            </p>
+            <a href="/index.html#demo" class="btn">Tester l'extraction gratuite</a>
+        </div>
+    </section>
+
+    <footer>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 Datagraphe. Ingénierie de la Donnée.</p>
+    </footer>
+
+</body>
+</html>

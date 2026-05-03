@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cas Pratique : Prospection Solaire B2B | Datagraphe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; 
+            --primary-glow: rgba(37, 99, 235, 0.4);
+            --secondary: #38bdf8;
+            --bg: #020617;
+            --card-bg: rgba(15, 23, 42, 0.6);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.8; }
+
+        header { background: rgba(2, 6, 23, 0.95); border-bottom: 1px solid var(--card-border); padding: 15px 20px; position: fixed; top: 0; width: 100%; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--text-main); letter-spacing: -0.5px; }
+        .logo span { background: linear-gradient(to right, var(--secondary), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-btn { background: var(--primary); color: #fff; padding: 8px 20px; border-radius: 6px; font-weight: 800; text-decoration: none; font-size: 0.9rem; }
+
+        .article-hero { padding: 150px 20px 80px; text-align: center; border-bottom: 1px solid var(--card-border); background-image: radial-gradient(circle at 50% 100%, #0f172a, var(--bg) 60%); }
+        .tag { background: rgba(37, 99, 235, 0.1); color: var(--secondary); padding: 6px 16px; border-radius: 4px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 25px; display: inline-block; border: 1px solid rgba(56, 189, 248, 0.2); }
+        .article-hero h1 { max-width: 900px; margin: 0 auto 20px; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; line-height: 1.2; letter-spacing: -1px; }
+        .article-hero p { color: var(--text-muted); font-size: 1.2rem; max-width: 700px; margin: 0 auto; }
+
+        /* Metrics Recap */
+        .article-metrics { display: flex; justify-content: center; gap: 40px; margin-top: 50px; flex-wrap: wrap; }
+        .metric-box { text-align: left; background: var(--card-bg); padding: 20px 30px; border-radius: 12px; border: 1px solid var(--card-border); min-width: 200px; }
+        .metric-value { font-size: 2rem; font-weight: 800; color: var(--secondary); line-height: 1; margin-bottom: 5px; }
+        .metric-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+
+        .article-body { max-width: 800px; margin: 60px auto; padding: 0 20px; font-size: 1.1rem; color: #cbd5e1; }
+        .article-body h2 { color: #fff; font-size: 1.8rem; margin: 50px 0 20px; font-weight: 800; display: flex; align-items: center; gap: 15px; }
+        .article-body h2::before { content: ''; display: block; width: 12px; height: 12px; background: var(--secondary); border-radius: 50%; box-shadow: 0 0 10px var(--secondary); }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        
+        .highlight-box { background: rgba(37, 99, 235, 0.05); border-left: 4px solid var(--primary); padding: 30px; margin: 40px 0; border-radius: 0 12px 12px 0; }
+        .highlight-box p { margin: 0; font-style: italic; color: #fff; font-size: 1.2rem; }
+
+        .cta-section { background: var(--card-bg); border-top: 1px solid var(--card-border); padding: 80px 20px; text-align: center; margin-top: 60px; }
+        .cta-section h2 { font-size: 2rem; margin-bottom: 20px; color: #fff; }
+        .cta-section p { color: var(--text-muted); margin-bottom: 40px; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .btn-large { display: inline-block; padding: 18px 40px; background: linear-gradient(135deg, var(--secondary), var(--primary)); color: #fff; text-decoration: none; font-weight: 800; border-radius: 8px; font-size: 1.1rem; box-shadow: 0 4px 15px var(--primary-glow); transition: transform 0.3s; }
+        .btn-large:hover { transform: translateY(-2px); }
+
+        footer { background: #020617; padding: 40px 20px; border-top: 1px solid #1e293b; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo">DATA<span>GRAPHE</span></a>
+        <a href="/#contact" class="nav-btn">Tester l'infrastructure</a>
+    </header>
+
+    <div class="article-hero">
+        <span class="tag">Transition Énergétique</span>
+        <h1>Comment diviser par 3 son coût d'acquisition client dans le solaire B2B.</h1>
+        <p>L'étude de cas d'un réseau d'installateurs qui a remplacé ses bases de prospection classiques par le filtrage cartographique Datagraphe.</p>
+        
+        <div class="article-metrics">
+            <div class="metric-box">
+                <div class="metric-value">-68%</div>
+                <div class="metric-label">De temps de qualification</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-value">+45%</div>
+                <div class="metric-label">Taux de conversion (Cold Call)</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-value">0</div>
+                <div class="metric-label">Rejet pour zone protégée</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="article-body">
+        <h2>Le Problème : La prospection à l'aveugle</h2>
+        <p>Pour la majorité des acteurs de la transition énergétique, la prospection B2B (ou B2C) repose sur l'achat de bases de données standards (fichiers d'entreprises, codes NAF, etc.). Le problème de ces listes est qu'elles sont purement administratives. Elles ignorent la réalité du terrain.</p>
+        <p>Le résultat ? Les commerciaux passent <strong>70% de leur temps au téléphone</strong> pour découvrir que l'entreprise n'est pas propriétaire de ses locaux, que la toiture est orientée plein nord, ou que le bâtiment est situé dans un périmètre protégé par les Architectes des Bâtiments de France (ABF), rendant l'installation solaire impossible.</p>
+
+        <div class="highlight-box">
+            <p>"Nos commerciaux s'épuisaient. Ils faisaient un excellent travail de vente, mais la donnée de départ était tellement pauvre que la majorité des deals avortaient lors de l'étude de faisabilité technique."</p>
+        </div>
+
+        <h2>La Solution Datagraphe : L'Enrichissement Spatial</h2>
+        <p>Plutôt que d'extraire des listes d'entreprises génériques, l'infrastructure Datagraphe a inversé le paradigme en utilisant la donnée cartographique comme <strong>premier filtre de qualification</strong>.</p>
+        <p>Notre moteur d'ingénierie a exécuté la boucle suivante :</p>
+        <ol style="margin-left: 20px; margin-bottom: 25px;">
+            <li><strong>Agrégation :</strong> Identification des entreprises industrielles et agricoles sur le bassin ciblé.</li>
+            <li><strong>Analyse Cadastrale :</strong> Croisement avec les données géospatiales (PostGIS) pour ne conserver <em>que</em> les bâtiments disposant d'une surface de toiture exploitable supérieure à 400m².</li>
+            <li><strong>Exclusion Réglementaire :</strong> Élimination automatique des parcelles situées en zone ABF ou zone inondable stricte.</li>
+            <li><strong>Filtrage d'Exposition :</strong> Suppression des bâtiments dont l'orientation principale ne permet pas un rendement solaire optimal.</li>
+        </ol>
+
+        <h2>Le Résultat : Des signaux d'affaires chirurgicaux</h2>
+        <p>En injectant ce nouveau flux de données ultra-ciblées directement dans leur CRM, l'entreprise cliente a drastiquement modifié le quotidien de ses équipes commerciales.</p>
+        <p>Les appels à froid (Cold Calls) ne commençaient plus par une phase de découverte laborieuse, mais par une proposition d'hyper-personnalisée : <em>"Nous avons analysé la configuration de votre toiture sud de 600m²..."</em>. La confiance s'installe immédiatement, la friction commerciale disparaît, et le coût d'acquisition client (CAC) a été divisé par trois en moins d'un trimestre.</p>
+    </div>
+
+    <div class="cta-section">
+        <h2>Prêt à changer de méthode ?</h2>
+        <p>Arrêtez d'acheter des listes obsolètes. Laissez nos algorithmes extraire vos futurs clients sur-mesure.</p>
+        <a href="/#contact" class="btn-large">Demander mon échantillon de 100 Leads (Gratuit)</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Datagraphe. Éditeur de solutions logicielles.</p>
+    </footer>
+
+</body>
+</html>

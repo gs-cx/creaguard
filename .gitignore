@@ -1,0 +1,23 @@
+# ==========================================
+# DATAGRAPHE : Fichier d'exclusion Git
+# ==========================================
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Fichiers de configuration sensibles
+.env
+config.ini
+secret_keys.txt
+
+# Python (pour notre futur moteur API)
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.pytest_cache/
+
+# Fichiers de logs
+*.log

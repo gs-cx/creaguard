@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarifs | Datagraphe Spatial API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; 
+            --primary-glow: rgba(37, 99, 235, 0.4);
+            --secondary: #38bdf8; 
+            --bg: #020617; 
+            --card-bg: rgba(15, 23, 42, 0.6);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            line-height: 1.7; 
+            background-image: radial-gradient(circle at 50% -20%, #0f172a, var(--bg) 60%);
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border); z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        
+        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--text-main); display: flex; align-items: center; }
+        .nav-btn { background: transparent; border: 1px solid var(--card-border); color: var(--text-main); padding: 8px 20px; border-radius: 6px; font-weight: 600; text-decoration: none; transition: 0.3s; }
+        .nav-btn:hover { background: rgba(255,255,255,0.05); }
+
+        section { padding: 120px 20px 60px; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 15px; font-weight: 800; }
+        .gradient-text { background: linear-gradient(to right, var(--secondary), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { text-align: center; color: var(--text-muted); max-width: 600px; margin: 0 auto 60px; font-size: 1.1rem; }
+        
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        
+        .pricing-card { 
+            background: var(--card-bg); padding: 40px; border-radius: 16px; 
+            border: 1px solid var(--card-border); position: relative;
+            display: flex; flex-direction: column; transition: transform 0.3s;
+        }
+        .pricing-card:hover { transform: translateY(-5px); border-color: rgba(56, 189, 248, 0.3); }
+        
+        /* Mise en avant de l'offre centrale */
+        .popular { border-color: var(--primary); box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 20px var(--primary-glow); transform: scale(1.02); }
+        .popular:hover { transform: scale(1.02) translateY(-5px); border-color: var(--secondary); }
+        .popular-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(to right, var(--secondary), var(--primary)); color: #fff; padding: 4px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+
+        .plan-name { font-size: 1.4rem; font-weight: 600; margin-bottom: 15px; color: #fff; }
+        .plan-price { font-size: 3rem; font-weight: 800; margin-bottom: 20px; display: flex; align-items: baseline; }
+        .plan-price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; margin-left: 5px; }
+        .plan-desc { color: var(--text-muted); margin-bottom: 30px; font-size: 0.95rem; line-height: 1.6; }
+
+        .feature-list { list-style: none; margin-bottom: 40px; flex-grow: 1; }
+        .feature-list li { margin-bottom: 15px; display: flex; align-items: flex-start; color: #e2e8f0; font-size: 0.95rem; }
+        .feature-list li::before { content: '✓'; color: var(--success); margin-right: 12px; font-weight: bold; font-size: 1.1rem; }
+
+        .btn { 
+            display: block; text-align: center; padding: 16px; background: rgba(255,255,255,0.05); 
+            color: #fff; text-decoration: none; font-weight: 800; border-radius: 8px; border: 1px solid var(--card-border);
+            transition: 0.3s; width: 100%;
+        }
+        .btn:hover { background: rgba(255,255,255,0.1); }
+        
+        .btn-primary { background: var(--primary); border: none; }
+        .btn-primary:hover { background: #1d4ed8; box-shadow: 0 0 20px var(--primary-glow); }
+
+        @media (max-width: 768px) {
+            .popular { transform: none; }
+            .popular:hover { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="/index.html" class="logo">DATAGRAPHE</a>
+            <a href="/index.html" class="nav-btn">← Retour au site</a>
+        </div>
+    </header>
+
+    <section>
+        <h1 class="section-title">Des données brutes au <span class="gradient-text">revenu net.</span></h1>
+        <p class="subtitle">Choisissez le modèle d'acquisition qui correspond à la vitesse de votre force de vente.</p>
+
+        <div class="pricing-grid">
+            
+            <!-- Offre 1 : Le One-Shot -->
+            <div class="pricing-card">
+                <h3 class="plan-name">Fichier Sur-Mesure</h3>
+                <div class="plan-price">250€<span> / fichier</span></div>
+                <p class="plan-desc">Pour l'artisan ou la TPE voulant un coup de boost immédiat sans s'abonner à un logiciel.</p>
+                <ul class="feature-list">
+                    <li>Vous définissez vos critères géographiques.</li>
+                    <li>Nous traitons la donnée pour vous.</li>
+                    <li>Livraison d'un fichier Excel prêt à l'emploi.</li>
+                    <li>Jusqu'à 500 contacts qualifiés et vérifiés.</li>
+                    <li>Données froides (numéros, adresses, surfaces).</li>
+                </ul>
+                <a href="mailto:contact@datagraphe.com?subject=Demande Fichier Sur-Mesure" class="btn">Demander un devis</a>
+            </div>
+
+            <!-- Offre 2 : L'Abonnement SaaS -->
+            <div class="pricing-card popular">
+                <div class="popular-badge">Recommandé</div>
+                <h3 class="plan-name">Licence SaaS</h3>
+                <div class="plan-price">149€<span> / mois</span></div>
+                <p class="plan-desc">Pour les équipes commerciales qui souhaitent un flux continu de nouveaux prospects qualifiés.</p>
+                <ul class="feature-list">
+                    <li>Accès illimité à la plateforme cartographique.</li>
+                    <li>Filtres avancés (orientation, surface, secteurs).</li>
+                    <li>Export de 500 contacts défloutés par mois.</li>
+                    <li>Détection des nouveaux signaux (permis, etc.).</li>
+                    <li>Support prioritaire par nos ingénieurs.</li>
+                </ul>
+                <a href="mailto:contact@datagraphe.com?subject=Souscription Licence SaaS" class="btn btn-primary">Créer un compte</a>
+            </div>
+
+            <!-- Offre 3 : Enterprise -->
+            <div class="pricing-card">
+                <h3 class="plan-name">Data Pipeline</h3>
+                <div class="plan-price">Sur devis</div>
+                <p class="plan-desc">Pour les grands comptes nécessitant une intégration directe et massive dans leur écosystème.</p>
+                <ul class="feature-list">
+                    <li>Connexion API directe à votre CRM (Salesforce...).</li>
+                    <li>Volume de données illimité.</li>
+                    <li>Paramétrage des algorithmes PostGIS sur mesure.</li>
+                    <li>Mise à jour dynamique et synchronisation quotidienne.</li>
+                    <li>Accompagnement par un Data Engineer dédié.</li>
+                </ul>
+                <a href="mailto:contact@datagraphe.com?subject=Projet Data Enterprise" class="btn">Contacter l'équipe</a>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+</html>

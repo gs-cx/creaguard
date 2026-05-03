@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditions Générales de Vente | Datagraphe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; 
+            --primary-glow: rgba(37, 99, 235, 0.4);
+            --secondary: #38bdf8; 
+            --bg: #020617; 
+            --card-bg: rgba(15, 23, 42, 0.6);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            line-height: 1.7; 
+            background-image: radial-gradient(circle at 50% -20%, #0f172a, var(--bg) 60%);
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border); z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        
+        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--text-main); display: flex; align-items: center; }
+        .nav-btn { background: transparent; border: 1px solid var(--card-border); color: var(--text-main); padding: 8px 20px; border-radius: 6px; font-weight: 600; text-decoration: none; transition: 0.3s; }
+        .nav-btn:hover { background: rgba(255,255,255,0.05); }
+
+        .legal-container { padding: 140px 20px 60px; max-width: 900px; margin: 0 auto; }
+        .section-title { font-size: 2.5rem; margin-bottom: 40px; font-weight: 800; }
+        .gradient-text { background: linear-gradient(to right, var(--secondary), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .legal-content { background: var(--card-bg); padding: 50px; border-radius: 16px; border: 1px solid var(--card-border); }
+        .legal-content h2 { color: var(--secondary); font-size: 1.3rem; margin-top: 30px; margin-bottom: 15px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
+        .legal-content h2:first-child { margin-top: 0; }
+        .legal-content p, .legal-content ul { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px; }
+        .legal-content ul { margin-left: 20px; }
+        .legal-content li { margin-bottom: 8px; }
+        .legal-content strong { color: #fff; }
+
+        @media (max-width: 768px) {
+            .legal-content { padding: 30px 20px; }
+            .section-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="/index.html" class="logo">DATAGRAPHE</a>
+            <a href="/index.html" class="nav-btn">← Retour au site</a>
+        </div>
+    </header>
+
+    <div class="legal-container">
+        <h1 class="section-title">Conditions Générales de <span class="gradient-text">Vente</span></h1>
+        
+        <div class="legal-content">
+            <h2>Préambule</h2>
+            <p>Les présentes Conditions Générales de Vente (CGV) s'appliquent, sans restriction ni réserve, à tout achat des services de fourniture de données B2B et d'accès logiciel (SaaS) proposés par la société <strong>Datagraphe</strong> aux clients professionnels (ci-après "Le Client").</p>
+
+            <h2>Article 1 : Objet du service</h2>
+            <p>Datagraphe commercialise des prestations d'ingénierie spatiale, d'enrichissement de données cartographiques et des listes de prospection ciblées à destination exclusive des professionnels.</p>
+
+            <h2>Article 2 : Accès aux services (SaaS et Fichiers)</h2>
+            <ul>
+                <li><strong>Abonnement SaaS :</strong> Le Client bénéficie d'une licence d'utilisation non exclusive et non transférable à l'interface Datagraphe pour la durée de son abonnement.</li>
+                <li><strong>Fichiers Sur-Mesure :</strong> La livraison des extractions de données s'effectue par voie électronique (format CSV ou Excel) dans un délai convenu au devis.</li>
+            </ul>
+
+            <h2>Article 3 : Propriété intellectuelle et Licence</h2>
+            <p>Les données brutes issues de l'Open Data (IGN, INSEE) restent la propriété de leurs producteurs respectifs. Cependant, l'architecture, les algorithmes de croisement, et la structuration des bases de données enrichies sont la propriété exclusive de Datagraphe.</p>
+            <p><strong>Interdiction stricte :</strong> Le Client s'interdit formellement de revendre, céder ou mettre à disposition de tiers les fichiers de prospection obtenus via Datagraphe. La licence accordée est strictement interne à l'entreprise du Client.</p>
+
+            <h2>Article 4 : Tarifs et Paiement</h2>
+            <p>Les prix sont indiqués en Euros et Hors Taxes (HT). Les factures sont payables à réception, sauf accord spécifique mentionné sur le devis. En cas de retard de paiement, des pénalités équivalentes à trois fois le taux d'intérêt légal seront appliquées.</p>
+
+            <h2>Article 5 : Données Personnelles et conformité RGPD</h2>
+            <p>Datagraphe agit en tant que fournisseur de données à destination exclusive de la prospection <strong>B2B</strong>. Conformément au RGPD et aux recommandations de la CNIL :</p>
+            <ul>
+                <li>Les données de contact fournies concernent uniquement des professionnels dans le cadre de leur fonction.</li>
+                <li>Le Client s'engage, lors de l'utilisation de ces données (emailing, phoning), à respecter le principe de l'opt-out et à fournir à ses propres prospects un moyen clair de s'opposer aux sollicitations commerciales.</li>
+                <li>Le Client est seul responsable de l'utilisation qu'il fait des données fournies par Datagraphe.</li>
+            </ul>
+
+            <h2>Article 6 : Limitation de responsabilité</h2>
+            <p>Datagraphe met en œuvre tous les moyens pour garantir la fraîcheur et la précision de ses données (issues des bases officielles). Toutefois, Datagraphe n'est tenu qu'à une obligation de moyens. La société ne saurait être tenue responsable de l'absence de retour sur investissement des campagnes de prospection du Client.</p>
+
+            <h2>Article 7 : Juridiction compétente</h2>
+            <p>Tout litige relatif à l'interprétation et à l'exécution des présentes CGV est soumis au droit français. À défaut de résolution amiable, le litige sera porté devant le Tribunal de Commerce compétent.</p>
+            
+            <p style="margin-top: 40px; font-size: 0.85rem; text-align: center;"><em>Dernière mise à jour : Mai 2026</em></p>
+        </div>
+    </div>
+
+</body>
+</html>

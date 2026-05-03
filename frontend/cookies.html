@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Cookies | Datagraphe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; 
+            --primary-glow: rgba(37, 99, 235, 0.4);
+            --secondary: #38bdf8; 
+            --bg: #020617; 
+            --card-bg: rgba(15, 23, 42, 0.6);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            line-height: 1.7; 
+            background-image: radial-gradient(circle at 50% -20%, #0f172a, var(--bg) 60%);
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border); z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        
+        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--text-main); display: flex; align-items: center; }
+        .nav-btn { background: transparent; border: 1px solid var(--card-border); color: var(--text-main); padding: 8px 20px; border-radius: 6px; font-weight: 600; text-decoration: none; transition: 0.3s; }
+        .nav-btn:hover { background: rgba(255,255,255,0.05); }
+
+        .legal-container { padding: 140px 20px 60px; max-width: 900px; margin: 0 auto; }
+        .section-title { font-size: 2.5rem; margin-bottom: 40px; font-weight: 800; text-align: center; }
+        .gradient-text { background: linear-gradient(to right, var(--secondary), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .legal-content { background: var(--card-bg); padding: 50px; border-radius: 16px; border: 1px solid var(--card-border); }
+        .legal-content h2 { color: var(--secondary); font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
+        .legal-content h2:first-child { margin-top: 0; }
+        .legal-content p, .legal-content ul { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 20px; }
+        .legal-content ul { margin-left: 20px; }
+        .legal-content li { margin-bottom: 10px; }
+        .legal-content strong { color: #fff; }
+
+        /* FOOTER */
+        footer { background: #020617; padding: 60px 20px 30px; border-top: 1px solid #1e293b; margin-top: 60px; }
+        .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
+        .footer-col h4 { color: #fff; margin-bottom: 20px; font-size: 1.1rem; }
+        .footer-col a { color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 12px; font-size: 0.9rem; transition: color 0.3s; }
+        .footer-col a:hover { color: var(--secondary); }
+        .footer-bottom { text-align: center; color: #475569; padding-top: 30px; border-top: 1px solid #1e293b; font-size: 0.85rem; }
+
+        @media (max-width: 768px) {
+            .legal-content { padding: 30px 20px; }
+            .section-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="/index.html" class="logo">DATAGRAPHE</a>
+            <a href="/index.html" class="nav-btn">← Retour au site</a>
+        </div>
+    </header>
+
+    <div class="legal-container">
+        <h1 class="section-title">Gestion des <span class="gradient-text">Cookies</span></h1>
+        
+        <div class="legal-content">
+            <h2>1. Qu'est-ce qu'un cookie ?</h2>
+            <p>Un cookie est un petit fichier texte déposé sur votre terminal (ordinateur, tablette, smartphone) lors de la visite d'un site web ou de l'utilisation d'une application logicielle. Il permet au site de mémoriser vos actions et préférences (telles que la connexion à votre espace client) pendant une durée déterminée.</p>
+
+            <h2>2. Les cookies que nous utilisons</h2>
+            <p>Dans un souci de transparence et de performance technique, l'infrastructure Datagraphe limite l'utilisation des cookies au strict minimum :</p>
+            <ul>
+                <li><strong>Cookies strictement nécessaires (Exemptés de consentement) :</strong> Ces cookies sont indispensables au fonctionnement de notre site et de notre application SaaS. Ils permettent notamment le maintien de votre session sécurisée, la mémorisation de votre panier lors de l'achat d'un fichier, et la répartition de la charge sur nos serveurs (Load Balancing).</li>
+                <li><strong>Cookies de mesure d'audience :</strong> Nous utilisons des outils d'analyse de trafic (statistiques anonymisées) pour comprendre comment nos utilisateurs naviguent sur nos pages afin d'optimiser l'ergonomie. Ces données sont agrégées et ne permettent pas de vous identifier personnellement.</li>
+            </ul>
+
+            <h2>3. Absence de cookies publicitaires</h2>
+            <p>Conformément à notre positionnement d'éditeur de logiciels B2B axé sur la sécurité des données, <strong>Datagraphe n'utilise aucun cookie publicitaire tiers</strong>. Nous ne revendons pas vos données de navigation à des régies publicitaires (de type Google Ads ou Meta) pour faire du reciblage (retargeting).</p>
+
+            <h2>4. Gestion et paramétrage</h2>
+            <p>La plupart des navigateurs web acceptent automatiquement les cookies, mais vous pouvez modifier les paramètres de votre navigateur pour les refuser si vous le préférez. Notez cependant que la désactivation des cookies strictement nécessaires empêchera l'accès à votre espace client SaaS Datagraphe.</p>
+            <p>Pour modifier vos paramètres de cookies, vous pouvez vous rendre dans le menu d'aide de votre navigateur :</p>
+            <ul>
+                <li>Google Chrome : Paramètres > Confidentialité et sécurité > Cookies.</li>
+                <li>Mozilla Firefox : Options > Vie privée et sécurité.</li>
+                <li>Safari : Préférences > Confidentialité.</li>
+            </ul>
+
+            <p style="margin-top: 40px; font-size: 0.85rem; text-align: center;"><em>Dernière mise à jour : Mai 2026</em></p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <a href="/" class="logo" style="margin-bottom: 15px;">DATAGRAPHE</a>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Ingénierie de la Donnée & Enrichissement Spatial.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Solutions</h4>
+                <a href="/tarifs.html">Nos Tarifs</a>
+                <a href="/agregation-donnees.html">Agrégation de Données</a>
+                <a href="/enrichissement-topographique.html">Enrichissement Topographique</a>
+                <a href="/integration-crm.html">Intégration CRM</a>
+            </div>
+            <div class="footer-col">
+                <h4>Légal & RGPD</h4>
+                <a href="/mentions-legales.html">Mentions Légales</a>
+                <a href="/cgv.html">Conditions Générales de Vente (CGV)</a>
+                <a href="/confidentialite.html">Politique de Confidentialité</a>
+                <a href="/cookies.html">Gestion des Cookies</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <a href="mailto:contact@datagraphe.com">contact@datagraphe.com</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Datagraphe. Éditeur de solutions logicielles B2B. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

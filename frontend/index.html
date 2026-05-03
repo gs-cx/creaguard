@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Datagraphe | Ingénierie de la Donnée & Prospection B2B Haute Précision</title>
+    <meta name="description" content="Détectez vos futurs clients avec Datagraphe. Expert en ingénierie de données spatiales, agrégation B2B et enrichissement cartographique (PostGIS).">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; 
+            --primary-glow: rgba(37, 99, 235, 0.4);
+            --secondary: #38bdf8; 
+            --bg: #020617; 
+            --card-bg: rgba(15, 23, 42, 0.6);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --font-mono: 'Fira Code', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            line-height: 1.7; 
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% -20%, #0f172a, var(--bg) 60%);
+            background-repeat: no-repeat;
+        }
+
+        header {
+            position: fixed;
+            top: 0; width: 100%;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            z-index: 1000;
+        }
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        
+        .logo { 
+            font-size: 1.5rem; 
+            font-weight: 800; 
+            letter-spacing: -0.5px; 
+            text-decoration: none; 
+            color: var(--text-main); 
+            display: flex; 
+            align-items: center; 
+        }
+        
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--secondary); }
+        .nav-btn { background: var(--primary); color: #fff !important; padding: 8px 20px; border-radius: 6px; font-weight: 800 !important; transition: background 0.3s; }
+        .nav-btn:hover { background: #1d4ed8 !important; }
+        
+        .burger { display: none; cursor: pointer; border: none; background: transparent; color: var(--text-main); font-size: 1.5rem; }
+
+        section { padding: 90px 20px; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 20px; font-weight: 800; letter-spacing: -0.5px; }
+        .section-subtitle { text-align: center; font-size: 1.2rem; color: var(--text-muted); margin-bottom: 60px; max-width: 700px; margin-left: auto; margin-right: auto; }
+        
+        .gradient-text {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero { 
+            min-height: 55vh; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; 
+            padding-top: 100px; padding-bottom: 40px;
+        }
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 25px; letter-spacing: -1px; }
+        .hero p { font-size: 1.25rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px; }
+        
+        .btn { 
+            display: inline-block; padding: 18px 40px; 
+            background: linear-gradient(135deg, var(--secondary), var(--primary)); 
+            color: #fff; text-decoration: none; font-weight: 800; border-radius: 8px; font-size: 1.15rem;
+            transition: all 0.3s ease; border: none; font-family: 'Inter', sans-serif; cursor: pointer;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--primary-glow); }
+
+        .metrics-bar { 
+            display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; 
+            padding: 40px 20px; border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border);
+            background: rgba(15, 23, 42, 0.3); margin-top: 20px;
+        }
+        .metric { text-align: center; }
+        .metric-number { font-size: 2.5rem; font-weight: 800; color: #fff; margin-bottom: 5px; }
+        .metric-label { font-size: 0.9rem; color: var(--secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        
+        .card { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 40px 30px; border-radius: 16px; 
+            border: 1px solid var(--card-border); 
+            transition: all 0.4s ease; 
+            display: flex; flex-direction: column; 
+            position: relative; overflow: hidden;
+        }
+        .card:hover { transform: translateY(-5px); background: rgba(30, 41, 59, 0.4); border-color: rgba(56, 189, 248, 0.4); }
+        .card h3 { font-size: 1.4rem; margin-bottom: 15px; color: #fff; }
+        .card p { color: var(--text-muted); font-size: 1rem; flex-grow: 1; line-height: 1.6; }
+
+        .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; position: relative; }
+        .step { text-align: center; padding: 20px; }
+        .step-number { width: 50px; height: 50px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 20px; box-shadow: 0 0 20px var(--primary-glow); }
+        .step h3 { color: #fff; margin-bottom: 10px; font-size: 1.2rem; }
+        .step p { color: var(--text-muted); font-size: 0.95rem; }
+
+        .use-cases-grid { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+        .use-case-card { padding: 35px; }
+        .use-case-card h3 { color: var(--secondary); font-size: 1.3rem; }
+        .feature-list { list-style: none; margin-top: 20px; border-top: 1px solid #1e293b; padding-top: 20px; }
+        .feature-list li { color: #e2e8f0; margin-bottom: 12px; font-size: 0.95rem; display: flex; align-items: flex-start; line-height: 1.5; }
+        .feature-list li::before { content: '→'; color: var(--secondary); margin-right: 12px; font-weight: bold; }
+
+        /* LIVE SEARCH UI */
+        .api-section { background: linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.5)); padding-top: 60px; padding-bottom: 100px; }
+        .api-box { background: var(--card-bg); padding: 40px; border-radius: 16px; border: 1px solid var(--primary); max-width: 1000px; margin: 0 auto; backdrop-filter: blur(10px); box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 20px var(--primary-glow); }
+        
+        /* DESIGN BARRE DE RECHERCHE IA (PROMPT) */
+        .ai-prompt-container {
+            background: #020617;
+            border: 1px solid #1e293b;
+            border-radius: 999px;
+            padding: 8px 8px 8px 25px;
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.8), 0 10px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .ai-prompt-container:focus-within {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2), 0 10px 25px rgba(0,0,0,0.3), 0 0 15px var(--primary-glow);
+        }
+
+        .ai-icon {
+            color: var(--secondary);
+            animation: pulse 3s infinite;
+        }
+
+        .ai-input { 
+            flex-grow: 1;
+            background: transparent; 
+            border: none; 
+            color: #f8fafc; 
+            font-size: 1.05rem; 
+            font-family: 'Inter', sans-serif; 
+            padding: 10px 15px;
+        }
+        
+        .ai-input:focus { 
+            outline: none; 
+        }
+        
+        .ai-input::placeholder {
+            color: #475569;
+        }
+        
+        .btn-generate {
+            height: 46px;
+            padding: 0 25px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+        
+        .results-container { background: #020617; border-radius: 8px; border: 1px solid #1e293b; overflow: hidden; }
+        .results-header { background: rgba(15, 23, 42, 0.9); padding: 15px 20px; border-bottom: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        
+        .data-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .data-table th, .data-table td { padding: 15px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
+        .data-table th { color: var(--secondary); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; }
+        .data-table tr:hover { background: rgba(255, 255, 255, 0.02); }
+        
+        .crypto-data { font-family: var(--font-mono); font-size: 0.9rem; }
+        .blur-name { color: var(--success); }
+        .blur-contact { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+        
+        .status-dot { display: inline-block; width: 8px; height: 8px; background: var(--success); border-radius: 50%; margin-right: 8px; box-shadow: 0 0 8px var(--success); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        .unlock-banner { background: linear-gradient(to right, rgba(37, 99, 235, 0.1), rgba(56, 189, 248, 0.1)); padding: 30px; text-align: center; border-top: 1px solid var(--primary); }
+        .unlock-banner h4 { font-size: 1.2rem; color: #fff; margin-bottom: 15px; }
+
+        /* FOOTER */
+        footer { background: #020617; padding: 60px 20px 30px; border-top: 1px solid #1e293b; }
+        .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
+        .footer-col h4 { color: #fff; margin-bottom: 20px; font-size: 1.1rem; }
+        .footer-col a { color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 12px; font-size: 0.9rem; transition: color 0.3s; }
+        .footer-col a:hover { color: var(--secondary); }
+        .footer-bottom { text-align: center; color: #475569; padding-top: 30px; border-top: 1px solid #1e293b; font-size: 0.85rem; }
+        
+        .social-links { display: flex; gap: 15px; margin-top: 20px; }
+        .social-icon { color: var(--text-muted); transition: color 0.3s; display: inline-flex; }
+        .social-icon:hover { color: var(--secondary); }
+
+        @media (max-width: 768px) {
+            .burger { display: block; }
+            .nav-links { display: none; flex-direction: column; width: 100%; position: absolute; top: 100%; left: 0; background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(16px); padding: 20px; border-bottom: 1px solid var(--card-border); }
+            .nav-links.active { display: flex; }
+            .nav-btn { display: inline-block; text-align: center; margin-top: 10px; }
+            
+            .ai-prompt-container { flex-direction: column; border-radius: 16px; padding: 15px; gap: 15px; align-items: stretch; }
+            .ai-icon { display: none; }
+            .btn-generate { justify-content: center; border-radius: 8px; }
+            
+            section { padding: 60px 20px; }
+            .api-box { padding: 20px; }
+            .data-table th, .data-table td { padding: 10px; font-size: 0.9rem; }
+            .hide-mobile { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.5" style="width: 28px; height: 28px; margin-right: 12px;">
+                  <defs>
+                    <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#38bdf8;stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M3 3h18v18H3z"></path>
+                  <path d="M3 9h18M3 15h18M9 3v18M15 3v18"></path>
+                  <rect x="9" y="9" width="6" height="6" fill="url(#logo-grad)" stroke="none"></rect>
+                  <circle cx="12" cy="12" r="1.5" fill="#fff" stroke="none"></circle>
+                </svg>
+                DATAGRAPHE
+            </a>
+            <button class="burger" onclick="toggleMenu()">☰</button>
+            <nav class="nav-links" id="navLinks">
+                <a href="/blog.html" onclick="toggleMenu()">Cas d'usage</a>
+                <a href="/tarifs.html" onclick="toggleMenu()">Tarifs</a>
+                <a href="#process" onclick="toggleMenu()">Notre Méthode</a>
+                <a href="#demo" class="nav-btn" onclick="toggleMenu()">Essai Gratuit</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Détectez vos futurs clients <br><span class="gradient-text">avant vos concurrents.</span></h1>
+        <p>Notre infrastructure d'intelligence spatiale identifie, qualifie et livre en continu les signaux d'affaires ultra-ciblés qui manquent à votre CRM.</p>
+        <div>
+            <a href="#demo" class="btn">Lancer une recherche gratuite</a>
+        </div>
+    </section>
+
+    <div class="metrics-bar">
+        <div class="metric">
+            <div class="metric-number">100%</div>
+            <div class="metric-label">Données vérifiées & dédupliquées</div>
+        </div>
+        <div class="metric">
+            <div class="metric-number">-60%</div>
+            <div class="metric-label">De temps perdu en prospection</div>
+        </div>
+        <div class="metric">
+            <div class="metric-number">Au mètre</div>
+            <div class="metric-label">Précision du ciblage spatial</div>
+        </div>
+    </div>
+
+    <section id="applications">
+        <h2 class="section-title">Une donnée fiable pour <span class="gradient-text">des marchés exigeants</span></h2>
+        <p class="section-subtitle">Notre moteur d'ingénierie s'adapte à votre industrie pour vous fournir le ciblage le plus granulaire du marché.</p>
+        
+        <div class="grid use-cases-grid">
+            <div class="card use-case-card">
+                <h3>Transition Énergétique</h3>
+                <ul class="feature-list">
+                    <li>Filtrage et qualification d'artisans certifiés (RGE, Qualibat)</li>
+                    <li>Analyse cadastrale (toitures à potentiel solaire)</li>
+                    <li>Croisement réglementaire : exclusion des zones classées</li>
+                </ul>
+            </div>
+            
+            <div class="card use-case-card">
+                <h3>Assurances & Risques</h3>
+                <ul class="feature-list">
+                    <li>Croisement avec les cartographies de risques (PPRI)</li>
+                    <li>Identification spatiale des sites industriels sensibles</li>
+                    <li>Modélisation de l'exposition pour ajustement des primes</li>
+                </ul>
+            </div>
+
+            <div class="card use-case-card">
+                <h3>Promotion Immobilière</h3>
+                <ul class="feature-list">
+                    <li>Détection algorithmique de parcelles divisibles</li>
+                    <li>Croisement avec les Plans Locaux d'Urbanisme (PLU)</li>
+                    <li>Données de contacts des propriétaires fonciers</li>
+                </ul>
+            </div>
+
+            <div class="card use-case-card">
+                <h3>Réseaux & Télécoms</h3>
+                <ul class="feature-list">
+                    <li>Cartographie des zones blanches et éligibilité</li>
+                    <li>Détection des points hauts pour antennes 5G</li>
+                    <li>Croisement avec le plan de déploiement Fibre (ARCEP)</li>
+                </ul>
+            </div>
+
+            <div class="card use-case-card">
+                <h3>Logistique & Supply Chain</h3>
+                <ul class="feature-list">
+                    <li>Recherche de foncier industriel par surface (> 5000m²)</li>
+                    <li>Analyse des accès routiers et bassins d'emploi</li>
+                    <li>Identification des entrepôts obsolètes ou vacants</li>
+                </ul>
+            </div>
+
+            <div class="card use-case-card">
+                <h3>Retail & Franchise</h3>
+                <ul class="feature-list">
+                    <li>Analyse isochrone et zones de chalandise</li>
+                    <li>Étude de la densité concurrentielle locale</li>
+                    <li>Évaluation du potentiel commercial par quartier</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="process">
+        <h2 class="section-title">Comment ça <span class="gradient-text">marche ?</span></h2>
+        <p class="section-subtitle">Une méthode transparente, de la définition de votre besoin jusqu'à la signature de vos nouveaux clients.</p>
+        
+        <div class="process-grid">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Le Cadrage</h3>
+                <p>Vous nous décrivez votre client idéal (critères géographiques, secteurs, signaux d'affaires). Nous validons la faisabilité technique.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>L'échantillon de prospects</h3>
+                <p>Nous lançons nos moteurs d'indexation et nous vous offrons un premier fichier test de 100 prospects. Vous jugez la qualité sur pièce.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Import dans votre base client (CRM)</h3>
+                <p>Si la qualité vous satisfait, nous passons à l'échelle. Vous recevez un flux de données nettoyé, prêt à être prospecté par vos équipes.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="api-section">
+        <h2 class="section-title">Recherche spatiale <span class="gradient-text">en temps réel.</span></h2>
+        <p class="section-subtitle">Interrogez nos bases géographiques en langage naturel. Les toitures et parcelles cibles sont extraites instantanément, avec masquage de sécurité sur les propriétaires.</p>
+        
+        <div class="api-box">
+            
+            <div class="ai-prompt-container">
+                <svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+                </svg>
+                <input type="text" id="aiSearchInput" class="ai-input" placeholder="Ex : Trouve-moi des toits orientés sud > 500m² dans l'agglomération de Lyon..." onkeypress="handleKeyPress(event)">
+                <button onclick="fetchData()" id="searchBtn" class="btn btn-generate">
+                    Extraire
+                </button>
+            </div>
+
+            <div class="results-container">
+                <div class="results-header">
+                    <div><span class="status-dot"></span> <span id="statusText">Moteur Géospatial prêt</span></div>
+                    <div id="resultCount">0 Ligne(s)</div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Parcelle & Adresse</th>
+                                <th class="hide-mobile">Surface Utile</th>
+                                <th class="hide-mobile">Orientation</th>
+                                <th>Propriétaire</th>
+                                <th>Contact (Sécurisé)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="apiResults">
+                            <!-- Les données AJAX viendront ici -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="unlock-banner">
+                    <h4>Obtenez ce fichier complet avec les contacts en clair</h4>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">Contactez nos ingénieurs pour définir votre cahier des charges spatial et recevoir votre premier fichier Excel/CSV gratuitement.</p>
+                    <a href="mailto:contact@datagraphe.com?subject=Demande%20Echantillon%20Datagraphe" class="btn" style="padding: 12px 30px; font-size: 1rem;">Débloquer les données (Gratuit)</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <a href="/" class="logo" style="margin-bottom: 15px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.5" style="width: 24px; height: 24px; margin-right: 10px;">
+                      <defs>
+                        <linearGradient id="logo-grad-footer" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" style="stop-color:#38bdf8;stop-opacity:1" />
+                          <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M3 3h18v18H3z"></path>
+                      <path d="M3 9h18M3 15h18M9 3v18M15 3v18"></path>
+                      <rect x="9" y="9" width="6" height="6" fill="url(#logo-grad-footer)" stroke="none"></rect>
+                      <circle cx="12" cy="12" r="1.5" fill="#fff" stroke="none"></circle>
+                    </svg>
+                    DATAGRAPHE
+                </a>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Ingénierie de la Donnée & Enrichissement Spatial.</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon" aria-label="LinkedIn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Twitter">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Solutions</h4>
+                <a href="/tarifs.html">Nos Tarifs</a>
+                <a href="/agregation-donnees.html">Agrégation de Données</a>
+                <a href="/enrichissement-topographique.html">Enrichissement Topographique</a>
+                <a href="/integration-crm.html">Intégration CRM</a>
+            </div>
+            <div class="footer-col">
+                <h4>Légal & RGPD</h4>
+                <a href="/mentions-legales.html">Mentions Légales</a>
+                <a href="/cgv.html">Conditions Générales de Vente (CGV)</a>
+                <a href="/confidentialite.html">Politique de Confidentialité</a>
+                <a href="/cookies.html">Gestion des Cookies</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <a href="mailto:contact@datagraphe.com">contact@datagraphe.com</a>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 10px;">📍 Hébergement cloud certifié (France)</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Datagraphe. Éditeur de solutions logicielles B2B. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            if (window.innerWidth <= 768) {
+                navLinks.classList.toggle('active');
+            }
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                fetchData();
+            }
+        }
+
+        // --- MOTEUR AJAX MIS À JOUR POUR L'EXTRACTION SPATIALE ---
+        async function fetchData() {
+            const query = document.getElementById('aiSearchInput').value;
+            const tbody = document.getElementById('apiResults');
+            const btn = document.getElementById('searchBtn');
+            const countDisplay = document.getElementById('resultCount');
+            const statusDisplay = document.getElementById('statusText');
+
+            btn.innerHTML = 'Analyse NLP...';
+            btn.style.opacity = '0.7';
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 40px; color: var(--secondary);">Analyse sémantique de votre requête spatiale en cours...</td></tr>';
+            statusDisplay.innerHTML = 'Traitement de la requête...';
+
+            try {
+                const response = await fetch(`/api/recherche?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                if(data.status === 'success') {
+                    countDisplay.innerHTML = `${data.count} Résultat(s) Pédagogique(s)`;
+                    statusDisplay.innerHTML = 'Données sécurisées reçues';
+                    tbody.innerHTML = '';
+
+                    if(data.count === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 40px; color: var(--text-muted);">Aucune parcelle trouvée pour cette requête.</td></tr>';
+                    } else {
+                        // Injection des données adaptées au format "Toiture/Parcelle"
+                        data.data.forEach(row => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>
+                                    <strong style="color: #fff;">${row.ville || 'Parcelle non définie'}</strong><br>
+                                    <span style="font-size: 0.85rem; color: var(--text-muted);">Cadastre: ${row.code_naf || 'AB 1234'}</span>
+                                </td>
+                                <td class="hide-mobile" style="color: var(--secondary); font-weight: bold;">
+                                    ${Math.floor(Math.random() * 800 + 400)} m²
+                                </td>
+                                <td class="hide-mobile" style="color: var(--text-muted);">
+                                    Sud-Est (135°)
+                                </td>
+                                <td style="color: #e2e8f0;">
+                                    ${row.nom_entreprise || 'Propriétaire Privé'}
+                                </td>
+                                <td class="crypto-data">
+                                    <div class="blur-name">${row.nom_floute || 'M. ***'}</div>
+                                    <div class="blur-contact">${row.email_floute || 'contact@***.fr'}</div>
+                                    <div class="blur-contact">${row.telephone_floute || '06 ** ** ** **'}</div>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                } else {
+                    throw new Error("Erreur serveur");
+                }
+            } catch (error) {
+                statusDisplay.innerHTML = '<span style="color: red;">Erreur de connexion API</span>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 40px; color: red;">Impossible de se connecter au moteur spatial.</td></tr>';
+            }
+
+            btn.innerHTML = 'Extraire';
+            btn.style.opacity = '1';
+        }
+
+        window.onload = fetchData;
+    </script>
+</body>
+</html>

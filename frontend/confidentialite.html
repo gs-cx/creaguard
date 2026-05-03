@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politique de Confidentialité | Datagraphe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; 
+            --primary-glow: rgba(37, 99, 235, 0.4);
+            --secondary: #38bdf8; 
+            --bg: #020617; 
+            --card-bg: rgba(15, 23, 42, 0.6);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            line-height: 1.7; 
+            background-image: radial-gradient(circle at 50% -20%, #0f172a, var(--bg) 60%);
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border); z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        
+        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--text-main); display: flex; align-items: center; }
+        .nav-btn { background: transparent; border: 1px solid var(--card-border); color: var(--text-main); padding: 8px 20px; border-radius: 6px; font-weight: 600; text-decoration: none; transition: 0.3s; }
+        .nav-btn:hover { background: rgba(255,255,255,0.05); }
+
+        .legal-container { padding: 140px 20px 60px; max-width: 900px; margin: 0 auto; }
+        .section-title { font-size: 2.5rem; margin-bottom: 40px; font-weight: 800; text-align: center; }
+        .gradient-text { background: linear-gradient(to right, var(--secondary), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .legal-content { background: var(--card-bg); padding: 50px; border-radius: 16px; border: 1px solid var(--card-border); }
+        .legal-content h2 { color: var(--secondary); font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
+        .legal-content h2:first-child { margin-top: 0; }
+        .legal-content p, .legal-content ul { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 20px; }
+        .legal-content ul { margin-left: 20px; }
+        .legal-content li { margin-bottom: 10px; }
+        .legal-content strong { color: #fff; }
+
+        /* FOOTER */
+        footer { background: #020617; padding: 60px 20px 30px; border-top: 1px solid #1e293b; margin-top: 60px; }
+        .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
+        .footer-col h4 { color: #fff; margin-bottom: 20px; font-size: 1.1rem; }
+        .footer-col a { color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 12px; font-size: 0.9rem; transition: color 0.3s; }
+        .footer-col a:hover { color: var(--secondary); }
+        .footer-bottom { text-align: center; color: #475569; padding-top: 30px; border-top: 1px solid #1e293b; font-size: 0.85rem; }
+
+        @media (max-width: 768px) {
+            .legal-content { padding: 30px 20px; }
+            .section-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="/index.html" class="logo">DATAGRAPHE</a>
+            <a href="/index.html" class="nav-btn">← Retour au site</a>
+        </div>
+    </header>
+
+    <div class="legal-container">
+        <h1 class="section-title">Politique de <span class="gradient-text">Confidentialité</span></h1>
+        
+        <div class="legal-content">
+            <h2>1. Engagement de Datagraphe</h2>
+            <p>La protection de vos données personnelles et des données que nous traitons est au cœur de notre modèle d'ingénierie. La présente politique décrit comment Datagraphe collecte, utilise et protège les informations, en stricte conformité avec le Règlement Général sur la Protection des Données (RGPD).</p>
+
+            <h2>2. Données collectées sur nos clients</h2>
+            <p>Dans le cadre de la fourniture de nos services SaaS et de nos fichiers B2B, nous collectons les données suivantes auprès de nos clients :</p>
+            <ul>
+                <li><strong>Données d'identification :</strong> Nom, prénom, fonction, nom de l'entreprise, numéro SIRET.</li>
+                <li><strong>Données de contact :</strong> Adresse e-mail professionnelle, numéro de téléphone, adresse de facturation.</li>
+                <li><strong>Données techniques :</strong> Adresse IP, logs de connexion et d'utilisation de l'API à des fins de sécurité et de débogage.</li>
+            </ul>
+
+            <h2>3. Traitement des données tierces (Base Prospect)</h2>
+            <p>Datagraphe agrège des données issues de l'Open Data (INSEE, IGN, BODACC) ainsi que des données de contacts professionnels publiques. Nous agissons dans ce cadre en vertu de l'intérêt légitime de la prospection B2B (Article 6.1.f du RGPD).</p>
+            <p>Nous ne traitons <strong>aucune donnée sensible</strong> et nous limitons la collecte aux informations strictement nécessaires à l'exercice d'une activité professionnelle.</p>
+
+            <h2>4. Hébergement et Sécurité</h2>
+            <p>L'intégralité de nos bases de données (PostgreSQL/PostGIS) et de nos serveurs applicatifs est hébergée en <strong>France</strong> chez notre partenaire OVHcloud. Nous utilisons des protocoles de chiffrement robustes (SSL/TLS) pour le transit des données et un cloisonnement strict (VLAN) pour nos infrastructures.</p>
+
+            <h2>5. Partage des données</h2>
+            <p>Vos données de compte client ne sont jamais revendues ou cédées à des tiers. Elles ne sont partagées qu'avec nos sous-traitants techniques essentiels (ex: prestataire de paiement Stripe, hébergeur OVH) soumis aux mêmes exigences de confidentialité.</p>
+
+            <h2>6. Vos droits (RGPD)</h2>
+            <p>Conformément à la réglementation européenne, vous (ainsi que les professionnels figurant dans nos bases de données) disposez des droits suivants :</p>
+            <ul>
+                <li>Droit d'accès et de rectification.</li>
+                <li>Droit à l'effacement (droit à l'oubli).</li>
+                <li>Droit d'opposition au traitement pour la prospection commerciale.</li>
+                <li>Droit à la portabilité de vos données de compte.</li>
+            </ul>
+            <p>Pour exercer vos droits, vous pouvez contacter notre Délégué à la Protection des Données (DPO) à l'adresse suivante : <strong>rgpd@datagraphe.com</strong>. Toute demande sera traitée dans un délai maximum de 30 jours.</p>
+
+            <p style="margin-top: 40px; font-size: 0.85rem; text-align: center;"><em>Dernière mise à jour : Mai 2026</em></p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <a href="/" class="logo" style="margin-bottom: 15px;">DATAGRAPHE</a>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Ingénierie de la Donnée & Enrichissement Spatial.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Solutions</h4>
+                <a href="/tarifs.html">Nos Tarifs</a>
+                <a href="/agregation-donnees.html">Agrégation de Données</a>
+                <a href="/enrichissement-topographique.html">Enrichissement Topographique</a>
+                <a href="/integration-crm.html">Intégration CRM</a>
+            </div>
+            <div class="footer-col">
+                <h4>Légal & RGPD</h4>
+                <a href="/mentions-legales.html">Mentions Légales</a>
+                <a href="/cgv.html">Conditions Générales de Vente (CGV)</a>
+                <a href="/confidentialite.html">Politique de Confidentialité</a>
+                <a href="/cookies.html">Gestion des Cookies</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <a href="mailto:contact@datagraphe.com">contact@datagraphe.com</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Datagraphe. Éditeur de solutions logicielles B2B. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
